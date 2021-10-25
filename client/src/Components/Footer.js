@@ -43,8 +43,8 @@ const Footer = (props) => {
             </div>
             <div className='footer-headings'>
                 <p>Established: 2021</p>
-                <p>© Copyright jay's. All Rights Reserved.</p>
-                <a href='www.thaboportfolio.herokuapp.com'>Website designed and Developed by Thabo Mponya.</a>
+                <p>© Copyright KK Cash Loans. All Rights Reserved.</p>
+                <a href='https://thaboportfolio.herokuapp.com'>Website designed and Developed by Thabo Mponya.</a>
             </div>
         </footer>
     )

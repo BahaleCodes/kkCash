@@ -3,5 +3,19 @@
         "facebook": "/",
         "instagram": "/",
         "twitter": "/"
-    }
+    },
+    "Values": [
+        {
+            "icon": "fas fa-rabbit-fast",
+            "title": ""
+        },
+        {
+            "icon": "fas fa-clock",
+            "title": ""
+        },
+        {
+            "icon": "fas fa-shield-alt",
+            "title": ""
+        }
+    ]
 }
