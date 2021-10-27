@@ -1,0 +1,13 @@
+.cnt_body{
+    font-size: 0.8em;
+    /* padding: 0.3em 1.5em; */
+    /* padding: 5rem; */
+    text-align: center;
+    height: 30rem;
+}
+.row {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    padding: 1rem;
+}

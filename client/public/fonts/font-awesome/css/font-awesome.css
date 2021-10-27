@@ -207,6 +207,9 @@
 .fa-check:before {
   content: "\f00c";
 }
+.fa-id:before{
+  content: "\f2c3";
+}
 .fa-remove:before,
 .fa-close:before,
 .fa-times:before {

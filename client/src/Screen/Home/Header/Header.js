@@ -1,9 +1,11 @@
-import React from "react";
-import Input from "../../../Components/UI/Input/Input";
+import React, { useState } from "react";
 
+import Application from "./Application/Application";
 import classes from './Header.module.css';
+import HowToApply from "./HowToApply/HowToApply";
 
 const Header = () => {
+    const [showHow, setShowHow] = useState(false);
     return (
         <div className='container'>
             <div className={classes.Header}>
@@ -11,21 +13,22 @@ const Header = () => {
                     <div className={classes.content}>
                         <div className={classes.drawer}>
                             <h3>How to Apply
-                                <button className='btn-custom'>
-                                    <i className='fa fa-arrow-down'></i>
+                                <button className='btn-custom' onClick={
+                                    () => (setShowHow(prevShowHow => !prevShowHow))
+                                } >
+                                    {
+                                        showHow
+                                            ? <i className='fa fa-arrow-up'></i>
+                                            : <i className='fa fa-arrow-down'></i>
+                                    }
                                 </button>
                             </h3>
                         </div>
-                        <div className={classes.cnt_body}>
-                            <div className={classes.col}>
-                                <div className='col-md-3'>
-                                    <Input name={"amount"} />
-                                </div>
-                                <div className='col-md-3'>
-                                    <Input name={"duration"} />
-                                </div>
-                            </div>
-                        </div>
+                        {
+                            showHow
+                                ? <HowToApply />
+                                : <Application />
+                        }
                     </div>
                 </div>
             </div>
