@@ -9,6 +9,7 @@ import HowItWorks from './Screen/HowItWorks';
 import Privacy from './Screen/Privacy';
 import Terms from './Screen/Terms';
 import jsonData from './data/data.json';
+import Loan from './Screen/Loan/Loan';
 
 const Routes = () => {
     const [ kkdata, setKKdata ] = useState([]);
@@ -18,6 +19,7 @@ const Routes = () => {
     return (
         <div>
             <Route path='/' exact render={() => <Home data={kkdata.Values} />} />
+            <Route path='/loan-application' exxact component={Loan} />
             <Route path='/how-it-works' exact component={HowItWorks} />
             <Route path='/contact' exact component={Contact} />
             <Route path='/about-us' exact component={About} />

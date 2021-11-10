@@ -180,6 +180,11 @@ hr {
   transition: all 0.5s linear;
   border: 2px solid #0071c5;
 }
+.btn-custom[disabled],
+.btn-custom:disabled{
+  background-color: gray;
+  border: none;
+}
 .btn-custom:hover,
 .btn-custom:focus,
 .btn-custom.focus,
@@ -205,6 +210,35 @@ a:focus,
 .btn.active.focus {
   outline: none;
   outline-offset: none;
+}
+.btn-custom-neg {
+  font-family: 'Cormorant', serif;
+  text-transform: uppercase;
+  color: #0071c5;
+  background-color: #333;
+  padding: 5px 14px;
+  letter-spacing: 1px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 25px;
+  transition: all 0.5s linear;
+  border: 2px solid #0071c5;
+}
+
+.btn-custom-neg:hover,
+.btn-custom-neg:focus,
+.btn-custom-neg.focus,
+.btn-custom-neg:active,
+.btn-custom-neg.active {
+  color: #0071c5;
+  background-color: transparent;
+  margin: 5px;
+}
+.btns {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
 }
 /* Footer Section*/
 #footer {

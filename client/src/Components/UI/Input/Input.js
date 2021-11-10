@@ -7,20 +7,21 @@ const Input = (props) => {
         <div id='input'>
             <div className={classes.form__group} >
                 <input
-                    type="number"
+                    type={props.type}
                     className={classes.form__field}
-                    placeholder={props.name}
+                    placeholder={props.placeholder}
                     name={props.name}
                     id={props.name}
                     required
-                    onChange={props.change}
-                    value={props.val}
+                    onChange={props.onChange}
+                    value={props.value}
+                    disabled={props.disabled}
                 />
                 <label
                     for={props.name}
                     className={classes.form__label}
                 >
-                    {props.name}
+                    {props.placeholder}
                 </label>
             </div>
         </div>

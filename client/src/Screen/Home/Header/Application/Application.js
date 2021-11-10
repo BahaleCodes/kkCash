@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import classes from './Application.module.css';
 import Input from '../../../../Components/UI/Input/Input';
@@ -6,6 +7,7 @@ import Input from '../../../../Components/UI/Input/Input';
 const Application = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [data, setData] = useState({
+        repaymentDay: null,
         amount: null,
         duration: 0,
         rate: 0.1,
@@ -17,25 +19,24 @@ const Application = () => {
     const handleInputChange = event => {
         setData({
             ...data,
-            // amount_due: (parseInt(data.amount) + parseInt(data.amount * data.rate)),
             installment,
             [event.target.name]: event.target.value
         });
     };
     const installment = () => {
         let price = data.amount;
-        const intrest_rate = 0.29;
+        const intrest_rate = parseFloat(data.rate);
         let val = (parseInt(price) + parseInt(price * intrest_rate));
         let time = parseInt(data.duration);
-        console.log(parseInt(price * intrest_rate));
-        console.log(data.duration);
-        console.log(startDate.setDate(startDate.getDate()+(time)));
+        let repayDay = startDate.setDate(startDate.getDate()+(time));
         setData({
             ...data,
             amount_due: val,
             interest: parseInt(price * intrest_rate),
+            repaymentDay: repayDay.toString(),
             showNumbers: true
-        })
+        });
+        // console
     }
     const nextHandle = () => {
         installment();
@@ -44,10 +45,12 @@ const Application = () => {
         <div className={classes.cnt_body}>
             <div className={classes.row}>
                 <div className='col-md-3'>
-                    <Input change={handleInputChange} name={"amount"} />
+                    <label>How Much (ZAR)?</label>
+                    <Input type={"Number"} value={data.amount} onChange={handleInputChange} name={"amount"} />
                 </div>
                 <div className='col-md-3'>
-                    <Input change={handleInputChange} name={"duration"} />
+                    <label>How Long (Days)?</label>
+                    <Input onChange={handleInputChange} name={"duration"} />
                 </div>
             </div>
             {
@@ -58,6 +61,19 @@ const Application = () => {
                                 showNumbers: false
                             })
                         )} className='btn-custom'>Cancel</button>
+                        <br />
+                        <br />
+                        <Link to={{
+                            pathname: '/loan-application',
+                            state: {
+                                amount_due: data.amount_due,
+                                duration: data.duration,
+                                amount: data.amount,
+                                interest: data.interest,
+                                rate: data.rate,
+                                repaymentDay: data.repaymentDay
+                            }
+                        }} className='btn-custom'>Continue</Link>
                         <div className={classes.row}>
                             <div className={classes.col}>
                                 <h4>R{data.amount_due}</h4>
