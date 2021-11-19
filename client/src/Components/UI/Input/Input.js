@@ -12,13 +12,15 @@ const Input = (props) => {
                     placeholder={props.placeholder}
                     name={props.name}
                     id={props.name}
-                    required
+                    // required
                     onChange={props.onChange}
                     value={props.value}
                     disabled={props.disabled}
+                    minLength={props.minLength}
+                    maxLength={props.maxLength}
                 />
                 <label
-                    for={props.name}
+                    htmlFor={props.name}
                     className={classes.form__label}
                 >
                     {props.placeholder}
