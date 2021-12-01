@@ -5,9 +5,6 @@ import SelectBox from "../../Components/UI/SelectBox/SelectBox";
 
 import classes from './Loan.module.css';
 
-const isEmpty = (value) => value.trim() === '';
-const isRSAID = (value) => value.trim().length === 13;
-
 const Loan = (props) => {
     const { state } = props.location;
     const [data, setData] = useState({
@@ -16,6 +13,8 @@ const Loan = (props) => {
         done: false,
         concent: false,
         reject: false,
+        inputError: false,
+        errorMessage: "",
 
         loanAmount: null,
         loanDue: null,
@@ -93,406 +92,9 @@ const Loan = (props) => {
         financesData: false,
         formDone: false,
     });
-    const [formInputsValidity, setFormInputsValidity] = useState({
-        firstName: true,
-        lastName: true,
-        idNum: true,
-        homeLanguage: true,
-        maritalStatus: true,
-        email: true,
-        password: true,
-
-        street_name: true,
-        suburb: true,
-        city: true,
-        province: true,
-        postalcode: true,
-
-        phoneNumber: true,
-        opt: true,
-        homeStatus: true,
-        dependents: true,
-
-        emp_status: true,
-        gross_income: true,
-        net_income: true,
-        income_frequency: true,
-        salary_day: true,
-        other_salary_day: true,
-
-        work_number: true,
-
-        university: true,
-        other_university: true,
-        academic_year: true,
-        other_academic_year: true,
-        course_duration: true,
-        other_course_duration: true,
-
-        division: true,
-        service_time: true,
-        other_service_time: true,
-
-        emp_type: true,
-        emplr_name: true,
-        emp_industry: true,
-        other_emp_industry: true,
-        emp_position: true,
-        other_emp_position: true,
-        time_with_employer: true,
-        other_time_with_employer: true,
-        emp_duration: true,
-
-        monthly_rates: true,
-        groceries: true,
-        commuting_costs: true,
-        loan_repayments: true,
-        child_maintenance: true,
-        desp_income: true,
-
-        bank_name: true,
-        other_bank: true,
-        acc_num: true,
-        acc_type: true,
-        other_acc_type: true,
-        branch_code: true,
-        acc_holder: true,
-    });
-
-    const firstNameInputRef = useRef();
-    const lastNameInputRef = useRef();
-    const idNumInputRef = useRef();
-    const homeLanguageInputRef = useRef();
-    const maritalStatusInputRef = useRef();
-    const emailInputRef = useRef();
-    const passwordInputRef = useRef();
-
-    const street_nameInputRef = useRef();
-    const suburbInputRef = useRef();
-    const cityInputRef = useRef();
-    const provinceInputRef = useRef();
-    const postalcodeInputRef = useRef();
-
-    const phoneNumberInputRef = useRef();
-    const optInputRef = useRef();
-    const homeStatusInputRef = useRef();
-    const dependentsInputRef = useRef();
-
-    const emp_statusInputRef = useRef();
-    const gross_incomeInputRef = useRef();
-    const net_incomeInputRef = useRef();
-    const income_frequencyInputRef = useRef();
-    const salary_dayInputRef = useRef();
-    const other_salary_dayInputRef = useRef();
-
-    const work_numberInputRef = useRef();
-
-    const universityInputRef = useRef();
-    const other_universityInputRef = useRef();
-    const academic_yearInputRef = useRef();
-    const other_academic_yearInputRef = useRef();
-    const course_durationInputRef = useRef();
-    const other_course_durationInputRef = useRef();
-
-    const divisionInputRef = useRef();
-    const service_timeInputRef = useRef();
-    const other_service_timeInputRef = useRef();
-
-    const emp_typeInputRef = useRef();
-    const emplr_nameInputRef = useRef();
-    const emp_industryInputRef = useRef();
-    const other_emp_industryInputRef = useRef();
-    const emp_positionInputRef = useRef();
-    const other_emp_positionInputRef = useRef();
-    const time_with_employerInputRef = useRef();
-    const other_time_with_employerInputRef = useRef();
-    const emp_durationInputRef = useRef();
-
-    const monthly_ratesInputRef = useRef();
-    const groceriesInputRef = useRef();
-    const commuting_costsInputRef = useRef();
-    const loan_repaymentsInputRef = useRef();
-    const child_maintenanceInputRef = useRef();
-    const desp_incomeInputRef = useRef();
-
-    const bank_nameInputRef = useRef();
-    const other_bankInputRef = useRef();
-    const acc_numInputRef = useRef();
-    const acc_typeInputRef = useRef();
-    const other_acc_typeInputRef = useRef();
-    const branch_codeInputRef = useRef();
-    const acc_holderInputRef = useRef();
-
     const confirmHandler = event => {
         event.preventDefault();
-
-        const entered_firstName = firstNameInputRef.current.value;
-        const entered_lastName = lastNameInputRef.current.value;
-        const entered_idNum = idNumInputRef.current.value;
-        const entered_homeLanguage = homeLanguageInputRef.current.value;
-        const entered_maritalStatus = maritalStatusInputRef.current.value;
-        const entered_email = emailInputRef.current.value;
-        const entered_password = passwordInputRef.current.value;
-
-        const entered_street_name = street_nameInputRef.current.value;
-        const entered_suburb = suburbInputRef.current.value;
-        const entered_city = cityInputRef.current.value;
-        const entered_province = provinceInputRef.current.value;
-        const entered_postalcode = postalcodeInputRef.current.value;
-
-        const entered_phoneNumber = phoneNumberInputRef.current.value;
-        const entered_opt = optInputRef.current.value;
-        const entered_homeStatus = homeStatusInputRef.current.value;
-        const entered_dependents = dependentsInputRef.current.value;
-
-        const entered_emp_status = emp_statusInputRef.current.value;
-        const entered_gross_income = gross_incomeInputRef.current.value;
-        const entered_net_income = net_incomeInputRef.current.value;
-        const entered_income_frequency = income_frequencyInputRef.current.value;
-        const entered_salary_day = salary_dayInputRef.current.value;
-        const entered_other_salary_day = other_salary_dayInputRef.current.value;
-
-        const entered_work_number = work_numberInputRef.current.value;
-
-        const entered_university = universityInputRef.current.value;
-        const entered_other_university = other_universityInputRef.current.value;
-        const entered_academic_year = academic_yearInputRef.current.value;
-        const entered_other_academic_year = other_academic_yearInputRef.current.value;
-        const entered_course_duration = course_durationInputRef.current.value;
-        const entered_other_course_duration = other_course_durationInputRef.current.value;
-
-        const entered_division = divisionInputRef.current.value;
-        const entered_service_time = service_timeInputRef.current.value;
-        const entered_other_service_time = other_service_timeInputRef.current.value;
-
-        const entered_emp_type = emp_typeInputRef.current.value;
-        const entered_emplr_name = emplr_nameInputRef.current.value;
-        const entered_emp_industry = emp_industryInputRef.current.value;
-        const entered_other_emp_industry = other_emp_industryInputRef.current.value;
-        const entered_emp_position = emp_positionInputRef.current.value;
-        const entered_other_emp_position = other_emp_positionInputRef.current.value;
-        const entered_time_with_employer = time_with_employerInputRef.current.value;
-        const entered_other_time_with_employer = other_time_with_employerInputRef.current.value;
-        const entered_emp_duration = emp_durationInputRef.current.value;
-
-        const entered_monthly_rates = monthly_ratesInputRef.current.value;
-        const entered_groceries = groceriesInputRef.current.value;
-        const entered_commuting_costs = commuting_costsInputRef.current.value;
-        const entered_loan_repayments = loan_repaymentsInputRef.current.value;
-        const entered_child_maintenance = child_maintenanceInputRef.current.value;
-        const entered_desp_income = desp_incomeInputRef.current.value;
-
-        const entered_bank_name = bank_nameInputRef.current.value;
-        const entered_other_bank = other_bankInputRef.current.value;
-        const entered_acc_num = acc_numInputRef.current.value;
-        const entered_acc_type = acc_typeInputRef.current.value;
-        const entered_other_acc_type = other_acc_typeInputRef.current.value;
-        const entered_branch_code = branch_codeInputRef.current.value;
-        const entered_acc_holder = acc_holderInputRef.current.value;
-
-        const entered_firstNameIsValid = !isEmpty(entered_firstName);
-        const entered_lastNameIsValid = !isEmpty(entered_lastName);
-        const entered_idNumIsValid = !isEmpty(entered_idNum) && isRSAID(entered_idNum);
-        const entered_homeLanguageIsValid = !isEmpty(entered_homeLanguage);
-        const entered_maritalStatusIsValid = !isEmpty(entered_maritalStatus);
-        const entered_emailIsValid = !isEmpty(entered_email);
-        const entered_passwordIsValid = !isEmpty(entered_password);
-
-        const entered_street_nameIsValid = !isEmpty(entered_street_name);
-        const entered_suburbIsValid = !isEmpty(entered_suburb);
-        const entered_cityIsValid = !isEmpty(entered_city);
-        const entered_provinceIsValid = !isEmpty(entered_province);
-        const entered_postalcodeIsValid = !isEmpty(entered_postalcode);
-
-        const entered_phoneNumberIsValid = !isEmpty(entered_phoneNumber);
-        const entered_optIsValid = !isEmpty(entered_opt);
-        const entered_homeStatusIsValid = !isEmpty(entered_homeStatus);
-        const entered_dependentsIsValid = !isEmpty(entered_dependents);
-
-        const entered_emp_statusIsValid = !isEmpty(entered_emp_status);
-        const entered_gross_incomeIsValid = !isEmpty(entered_gross_income);
-        const entered_net_incomeIsValid = !isEmpty(entered_net_income);
-        const entered_income_frequencyIsValid = !isEmpty(entered_income_frequency);
-        const entered_salary_dayIsValid = !isEmpty(entered_salary_day);
-        const entered_other_salary_dayIsValid = !isEmpty(entered_other_salary_day);
-
-        const entered_work_numberIsValid = !isEmpty(entered_work_number);
-
-        const entered_universityIsValid = !isEmpty(entered_university);
-        const entered_other_universityIsValid = !isEmpty(entered_other_university);
-        const entered_academic_yearIsValid = !isEmpty(entered_academic_year);
-        const entered_other_academic_yearIsValid = !isEmpty(entered_other_academic_year);
-        const entered_course_durationIsValid = !isEmpty(entered_course_duration);
-        const entered_other_course_durationIsValid = !isEmpty(entered_other_course_duration);
-
-        const entered_divisionIsValid = !isEmpty(entered_division);
-        const entered_service_timeIsValid = !isEmpty(entered_service_time);
-        const entered_other_service_timeIsValid = !isEmpty(entered_other_service_time);
-
-        const entered_emp_typeIsValid = !isEmpty(entered_emp_type);
-        const entered_emplr_nameIsValid = !isEmpty(entered_emplr_name);
-        const entered_emp_industryIsValid = !isEmpty(entered_emp_industry);
-        const entered_other_emp_industryIsValid = !isEmpty(entered_other_emp_industry);
-        const entered_emp_positionIsValid = !isEmpty(entered_emp_position);
-        const entered_other_emp_positionIsValid = !isEmpty(entered_other_emp_position);
-        const entered_time_with_employerIsValid = !isEmpty(entered_time_with_employer);
-        const entered_other_time_with_employerIsValid = !isEmpty(entered_other_time_with_employer);
-        const entered_emp_durationIsValid = !isEmpty(entered_emp_duration);
-
-        const entered_monthly_ratesIsValid = !isEmpty(entered_monthly_rates);
-        const entered_groceriesIsValid = !isEmpty(entered_groceries);
-        const entered_commuting_costsIsValid = !isEmpty(entered_commuting_costs);
-        const entered_loan_repaymentsIsValid = !isEmpty(entered_loan_repayments);
-        const entered_child_maintenanceIsValid = !isEmpty(entered_child_maintenance);
-        const entered_desp_incomeIsValid = !isEmpty(entered_desp_income);
-
-        const entered_bank_nameIsValid = !isEmpty(entered_bank_name);
-        const entered_other_bankIsValid = !isEmpty(entered_other_bank);
-        const entered_acc_numIsValid = !isEmpty(entered_acc_num);
-        const entered_acc_typeIsValid = !isEmpty(entered_acc_type);
-        const entered_other_acc_typeIsValid = !isEmpty(entered_other_acc_type);
-        const entered_branch_codeIsValid = !isEmpty(entered_branch_code);
-        const entered_acc_holderIsValid = !isEmpty(entered_acc_holder);
-
-        setFormInputsValidity({
-            firstName: entered_firstNameIsValid,
-            lastName: entered_lastNameIsValid,
-            idNum: entered_idNumIsValid,
-            homeLanguage: entered_homeLanguageIsValid,
-            maritalStatus: entered_maritalStatusIsValid,
-            email: entered_emailIsValid,
-            password: entered_passwordIsValid,
-
-            street_name: entered_street_nameIsValid,
-            suburb: entered_suburbIsValid,
-            city: entered_cityIsValid,
-            province: entered_provinceIsValid,
-            postalcode: entered_postalcodeIsValid,
-
-            phoneNumber: entered_phoneNumberIsValid,
-            opt: entered_optIsValid,
-            homeStatus: entered_homeStatusIsValid,
-            dependents: entered_dependentsIsValid,
-
-            emp_status: entered_emp_statusIsValid,
-            gross_income: entered_gross_incomeIsValid,
-            net_income: entered_net_incomeIsValid,
-            income_frequency: entered_income_frequencyIsValid,
-            salary_day: entered_salary_dayIsValid,
-            other_salary_day: entered_other_salary_dayIsValid,
-
-            work_number: entered_work_numberIsValid,
-
-            university: entered_universityIsValid,
-            other_university: entered_other_universityIsValid,
-            academic_year: entered_academic_yearIsValid,
-            other_academic_year: entered_other_academic_yearIsValid,
-            course_duration: entered_course_durationIsValid,
-            other_course_duration: entered_other_course_durationIsValid,
-
-            division: entered_divisionIsValid,
-            service_time: entered_service_timeIsValid,
-            other_service_time: entered_other_service_timeIsValid,
-
-            emp_type: entered_emp_typeIsValid,
-            emplr_name: entered_emplr_nameIsValid,
-            emp_industry: entered_emp_industryIsValid,
-            other_emp_industry: entered_other_emp_industryIsValid,
-            emp_position: entered_emp_positionIsValid,
-            other_emp_position: entered_other_emp_positionIsValid,
-            time_with_employer: entered_time_with_employerIsValid,
-            other_time_with_employer: entered_other_time_with_employerIsValid,
-            emp_duration: entered_emp_durationIsValid,
-
-            monthly_rates: entered_monthly_ratesIsValid,
-            groceries: entered_groceriesIsValid,
-            commuting_costs: entered_commuting_costsIsValid,
-            loan_repayments: entered_loan_repaymentsIsValid,
-            child_maintenance: entered_child_maintenanceIsValid,
-            desp_income: entered_desp_incomeIsValid,
-
-            bank_name: entered_bank_nameIsValid,
-            other_bank: entered_other_bankIsValid,
-            acc_num: entered_acc_numIsValid,
-            acc_type: entered_acc_typeIsValid,
-            other_acc_type: entered_other_acc_typeIsValid,
-            branch_code: entered_branch_codeIsValid,
-            acc_holder: entered_acc_holderIsValid,
-        });
-
-        const formIsValid = 
-        entered_firstName &&
-        entered_lastName &&
-        entered_idNum &&
-        entered_homeLanguage &&
-        entered_maritalStatus &&
-        entered_email &&
-        entered_password &&
-
-        entered_street_name &&
-        entered_suburb &&
-        entered_city &&
-        entered_province &&
-        entered_postalcode &&
-
-        entered_phoneNumber &&
-        entered_opt &&
-        entered_homeStatus &&
-        entered_dependents &&
-
-        entered_emp_status &&
-        entered_gross_income &&
-        entered_net_income &&
-        entered_income_frequency &&
-        entered_salary_day &&
-        entered_other_salary_day &&
-
-        entered_work_number &&
-
-        entered_university &&
-        entered_other_university &&
-        entered_academic_year &&
-        entered_other_academic_year &&
-        entered_course_duration &&
-        entered_other_course_duration &&
-
-        entered_division &&
-        entered_service_time &&
-        entered_other_service_time &&
-
-        entered_emp_type &&
-        entered_emplr_name &&
-        entered_emp_industry &&
-        entered_other_emp_industry &&
-        entered_emp_position &&
-        entered_other_emp_position &&
-        entered_time_with_employer &&
-        entered_other_time_with_employer &&
-        entered_emp_duration &&
-
-        entered_monthly_rates &&
-        entered_groceries &&
-        entered_commuting_costs &&
-        entered_loan_repayments &&
-        entered_child_maintenance &&
-        entered_desp_income &&
-
-        entered_bank_name &&
-        entered_other_bank &&
-        entered_acc_num &&
-        entered_acc_type &&
-        entered_other_acc_type &&
-        entered_branch_code &&
-        entered_acc_holder;
-
-        if (!formIsValid) {
-            return;
-        }
-
     }
-
-
-
 
     const handleInputChange = event => {
         setData({
@@ -526,13 +128,25 @@ const Loan = (props) => {
         console.log(data);
     };
 
-    const personalNext = () => {
-        setData({
-            ...data,
-            personalData: false,
-            addressData: true
-        });
-        console.log(data);
+    const personalNext = (e) => {
+        e.preventDefault();
+        let validFName = data.firstName === null
+            ? false
+            : true
+        if (validFName) {
+            setData({
+                ...data,
+                personalData: false,
+                addressData: true
+            });
+        }
+        else {
+            setData({
+                ...data,
+                inputError: true,
+                errorMessage: "First Name is Required"
+            })
+        }
     };
     const addressNext = () => {
         setData({
@@ -618,17 +232,8 @@ const Loan = (props) => {
         <div className='body-padding'>
             <h2>Personal Information</h2>
             <ProgressBar width='10%' step={"1"} />
-            <form className='form-section' name='LoanApplication' onSubmit={confirmHandler} validate="true" >
-                {/* <Input
-                    value={data.firstName}
-                    name="firstName"
-                    ref={firstNameInputRef}
-                    placeholder="First Name"
-                    type="Text"
-                    onChange={handleInputChange} /> */}
-                    <label htmlFor='firstName'>Your Name</label>
-                    <input type='text' id='firstName' ref={firstNameInputRef} />
-                    {!formInputsValidity.firstName && <p>Please enter a valid First name!</p>}
+            <form className='form-section' name='LoanApplication' onSubmit={personalNext} validate="true" >
+                <Input value={data.firstName} name="firstName" placeholder="First Name" type="Text" onChange={handleInputChange} />
                 <br />
                 <Input value={data.lastName} name='lastName' placeholder='Surname' type='Text' onChange={handleInputChange} />
                 <br />
@@ -664,13 +269,21 @@ const Loan = (props) => {
                 <br />
                 <Input value={data.password} name='password' placeholder='Password' type='password' onChange={handleInputChange} />
                 <br />
-                <div className='btns'>
-                    <a href='/' className='btn-custom-neg'>Back</a>
+                <div>
                     {
-                        data.email === null && data.password === null && data.maritalStatus === null && data.homeLanguage === null && data.idNum === null && data.lastName === null && data.firstName === null
-                            ? 'Next'
-                            : <button className='btn-custom' >Next</button>
-
+                        data.inputError 
+                            ? <div>
+                                <h4 style={{ color: "red" }} >{data.errorMessage}</h4>
+                            </div>
+                            : <div className='btns'>
+                                <a href='/' className='btn-custom-neg'>Back</a>
+                                {/* {
+                                    data.email === null && data.password === null && data.maritalStatus === null && data.homeLanguage === null && data.idNum === null && data.lastName === null && data.firstName === null
+                                        ? 'Next'
+                                        : <button className='btn-custom' >Next</button>
+                                } */}
+                                <button className='btn-custom' >Next</button>
+                            </div>
                     }
                 </div>
             </form>
@@ -1080,16 +693,21 @@ const Loan = (props) => {
         </div>
     );
     const formComplete = (
-        <fiv className='body-padding'>
+        <div className='body-padding'>
             <h2>Application Complete</h2>
             <ProgressBar width='100%' step="7" />
             <h3>Your loan application has been sent for review.</h3>
             <h4>Please keep your eyes open for further confirmation on the results of your loan application</h4>
             <h4>Once approved, you will be notified with an Email and shortly, your R{state.amount} will be paid into your bank account.</h4>
-        </fiv>
+        </div>
     )
     const rejectDiv = (
         <div>Rejected</div>
+    )
+    const inputErrorForm = (
+        <div className='body-padding'>
+            <h2>We have ran into a error</h2>
+        </div>
     )
     return (
         <div style={{

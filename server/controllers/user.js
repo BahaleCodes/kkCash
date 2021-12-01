@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const { errorHandler } = require('../helpers/dbErrorHandler');
+const { Loan } = require('../models/loan');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -12,13 +13,11 @@ exports.userById = (req, res, next, id) => {
         next();
     });
 };
-
 exports.read = (req, res) => {
     req.profile.hashed_password = undefined;
     req.profile.salt = undefined;
     return res.json(req.profile);
 };
-
 exports.update = (req, res) => {
     const { first_name, last_name, email, phone_number, password, idNum, home_language, marital_status, home_status, dependants } = req.body;
     User.findOne({ _id: req.profile._id }, (err, user) => {
@@ -117,4 +116,43 @@ exports.update = (req, res) => {
             res.json(updatedUser);
         });
     });
+};
+
+exports.addOrderToUserHistory = (req, res, next) => {
+    let history = [];
+
+    req.body.loan.forEach(item => {
+        loan_history.push({
+            _id: item._id,
+            amount: items.loan,
+            duration: items.duration,
+            repay_date: items.repay_date,
+            interest_rate: items.interest_rate,
+            approved: items.approved,
+            state: items.state
+        });
+    });
+
+    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { history: history } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
+
+exports.purchaseHistory = (req, res) => {
+    Loan.find({ user: req.profile._id })
+        .populate('user', '_id name')
+        .sort('-created')
+        .exec((err, orders) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(orders);
+        });
 };

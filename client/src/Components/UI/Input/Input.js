@@ -12,7 +12,7 @@ const Input = (props) => {
                     placeholder={props.placeholder}
                     name={props.name}
                     id={props.name}
-                    // required
+                    required
                     onChange={props.onChange}
                     value={props.value}
                     disabled={props.disabled}
