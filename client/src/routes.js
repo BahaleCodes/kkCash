@@ -19,7 +19,7 @@ const Routes = () => {
     return (
         <div>
             <Route path='/' exact render={() => <Home data={kkdata.Values} />} />
-            <Route path='/loan-application' exxact component={Loan} />
+            <Route path='/loan-application' exact component={Loan} />
             <Route path='/how-it-works' exact component={HowItWorks} />
             <Route path='/contact' exact component={Contact} />
             <Route path='/about-us' exact component={About} />

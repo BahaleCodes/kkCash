@@ -3,23 +3,27 @@ import { Link } from 'react-router-dom';
 
 import classes from './Application.module.css';
 import Input from '../../../../Components/UI/Input/Input';
+import RangeSlider from '../../../../Components/UI/RangeSlider/RangeSlider';
 
 const Application = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [data, setData] = useState({
         repaymentDay: null,
-        amount: null,
-        duration: 0,
+        startDate: new Date(),
+        amount: 500,
+        duration: 7,
         rate: 0.1,
         amount_due: 0,
         interest: 0,
         showNumbers: false,
-        filled: false
+        filled: false,
+        notify: false,
+        notice: ""
     })
     const handleInputChange = event => {
         setData({
             ...data,
-            installment,
+            notify: false,
             [event.target.name]: event.target.value
         });
     };
@@ -28,14 +32,41 @@ const Application = () => {
         const intrest_rate = parseFloat(data.rate);
         let val = (parseInt(price) + parseInt(price * intrest_rate));
         let time = parseInt(data.duration);
-        let repayDay = startDate.setDate(startDate.getDate()+(time));
-        setData({
-            ...data,
-            amount_due: val,
-            interest: parseInt(price * intrest_rate),
-            repaymentDay: repayDay.toString(),
-            showNumbers: true
-        });
+        let repayDay = startDate.setDate(startDate.getDate() + (time));
+        if ((parseInt(data.amount)) > 500 && (parseInt(data.duration)) > 5 && (parseInt(data.amount)) < 2001 && (parseInt(data.duration)) < 31 ) {
+            setData({
+                ...data,
+                amount_due: val,
+                interest: parseInt(price * intrest_rate),
+                repaymentDay: repayDay.toString(),
+                showNumbers: true
+            });
+        }
+        else if ((parseInt(data.amount)) < 500) {
+            setData({
+                notify: true,
+                notice: "Loan amount shouldn't be lower than R500"
+            })
+        }
+        else if ((parseInt(data.duration)) < 5) {
+            setData({
+                notify: true,
+                notice: "Loan duration shouldn't be less than 5 days"
+            })
+        }
+        else if ((parseInt(data.duration)) > 30) {
+            setData({
+                notify: true,
+                notice: "Loan duration shouldn't be longer than 30 days"
+            })
+        }
+        else if ((parseInt(data.amount)) > 2000) {
+            setData({
+                notify: true,
+                notice: "Loan amount shouldn't be greater than R2000"
+            })
+        }
+        
         // console
     }
     const nextHandle = () => {
@@ -50,9 +81,20 @@ const Application = () => {
                 </div>
                 <div className='col-md-3'>
                     <label>How Long (Days)?</label>
-                    <Input onChange={handleInputChange} name={"duration"} />
+                    <Input type={"Number"} value={data.duration} onChange={handleInputChange} name={"duration"} />
                 </div>
             </div>
+            <div className='col-md-12'>
+                <RangeSlider min={0} max={2000} step={5} name={"amount"} onChange={handleInputChange} volume={data.amount} />
+                <RangeSlider min={0} max={30} step={1} name={"duration"} onChange={handleInputChange} volume={data.duration} />
+            </div>
+            {
+                data.notify
+                ? <div>
+                    <h5>{data.notice}</h5>
+                </div>
+                : ""
+            }
             {
                 data.showNumbers
                     ? <div>
@@ -89,13 +131,14 @@ const Application = () => {
                             </div>
                         </div>
                     </div>
+
                     : <div className='col-md-12 body-padding'>
                         {
                             data.duration !== null && data.duration !== 0
-                            ? <button onClick={nextHandle} className='btn-custom'>Next</button>
-                            : ""
+                                ? <button onClick={nextHandle} className='btn-custom'>Next</button>
+                                : ""
                         }
-                        
+
                         <p>Please enter desired amount and duration to pay loan.</p>
                     </div>
             }
