@@ -8,6 +8,11 @@ const addressSchema = new mongoose.Schema(
             required: true,
             maxlength: 102
         },
+        suburb: {
+            type: String,
+            required: true,
+            maxlength: 52
+        },
         city: {
             type: String,
             trim: true,
@@ -26,8 +31,7 @@ const addressSchema = new mongoose.Schema(
             required: true,
             maxlength: 5
         }
-    },
-    { timestamps: true }
+    }
 );
 
 module.exports = mongoose.model("Address", addressSchema);

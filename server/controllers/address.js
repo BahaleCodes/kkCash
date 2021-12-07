@@ -36,7 +36,13 @@ exports.update = (req, res) => {
     } else {
         address.street = req.body.street;
     }
-
+    if (!address.suburb) {
+        return res.status(400).json({
+            error: "Suburb is required"
+        });
+    } else {
+        address.suburb = req.body.suburb;
+    }
     if (!address.city) {
         return res.status(400).json({
             error: "City is required"
@@ -44,7 +50,6 @@ exports.update = (req, res) => {
     } else {
         address.city = req.body.city;
     }
-
     if (!address.province) {
         return res.status(400).json({
             error: "Province is required"
@@ -52,7 +57,6 @@ exports.update = (req, res) => {
     } else {
         address.province = req.body.province;
     }
-
     if (!address.postal_code) {
         return res.status(400).json({
             error: "Postal Code is required"

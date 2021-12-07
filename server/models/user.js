@@ -56,8 +56,7 @@ const userSchema = new mongoose.Schema(
             maxlength: 30
         },
         dependents: {
-            type: Number,
-            trim: true,
+            type: String,
             required: true
         },
         // After the OPT section, we send the POST request to api/user/

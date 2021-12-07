@@ -1,6 +1,9 @@
 const Loan = require('../models/loan');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
+
 exports.loanById = (req, res, next, id) => {
     Loan.findById(id).exec((err, loan) => {
         if (err || !loan) {
@@ -13,74 +16,66 @@ exports.loanById = (req, res, next, id) => {
     });
 };
 exports.create = (req, res) => {
+    console.log('CREATE ORDER: ', req.body);
+    req.body.user = req.profile;
     const loan = new Loan(req.body);
-    loan.save((err, data) => {
-        if (err) {
+    loan.save((error, data) => {
+        if (error) {
             return res.status(400).json({
-                error: errorHandler(err)
+                error: error
             });
         }
-        res.json({ data });
-    });
-};
-exports.read = (req, res) => {
-    return res.json(req.loan);
-};
-exports.update = (req, res) => {
-    const loan = req.loan;
-    if (!loan.amount){
-        return res.status(400).json({
-            error: "Loan amount is required!"
-        });
-    } else {
-        loan.amount = req.body.amount;
-    }
-    if (!loan.duration){
-        return res.status(400).json({
-            error: "Loan duration is required!"
-        });
-    } else {
-        loan.duration = req.body.duration;
-    }
-    if (!loan.repay_date){
-        return res.status(400).json({
-            error: "Repay Date is required!"
-        });
-    } else {
-        loan.repay_date = req.body.repay_date;
-    }
-    if (!loan.interest_rate){
-        return res.status(400).json({
-            error: "Interest Rate is required!"
-        });
-    } else {
-        loan.interest_rate = req.body.interest_rate;
-    }
-    if (!loan.approved){
-        return res.status(400).json({
-            error: "Is the loan approved?"
-        });
-    } else {
-        loan.approved = req.body.approved;
-    }
-    if (!loan.state){
-        return res.status(400).json({
-            error: "What is the state of the loan?"
-        });
-    } else {
-        loan.state = req.body.state;
-    }
-    loan.save((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: "ERROR! Updating Banking Details Failed."
+        const emailData = {
+            to: "tmponya187@hotmail.com",
+            from: "codebahale@gmail.com",
+            subject: "New Loan application",
+            html: `
+                <p>New Loan application received</p>
+                <p>Total Amount: ${loan.amount}</p>
+                <p>Loan duration: ${loan.duration}</p>
+                <p>To be repaid on ${loan.repay_date}</p>
+                <a href='https://bahalecodes.co.za/' >Click here to go to dashboard and view further details about the loan</a>
+            `
+        };
+        sgMail.send(emailData)
+            .then(() => {
+                console.log("Message Sent")
+            })
+            .catch((error) => {
+                console.log(error.response.body)
             });
-        }
         res.json(data);
-    });
+    })
+}
+
+exports.listLoans = (req, res) => {
+    Loan.find()
+        .populate('user', '_id name first_name last_name idNum')
+        .sort('-created')
+        .exec((err, loans) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.json(loans);
+        });
 };
-exports.list = (req, res) => {
-    Loan.find().exec((err, data) => {
+
+exports.getStatusValue = (req, res) => {
+    res.json(Loan.schema.path('loan_state').enumValues);
+}
+
+exports.updateLoanStatus = (req, res) => {
+    const loan = req.loan;
+    if (!req.body.loan_state) {
+        return res.status(400).json({
+            error: "The Loan's state is required!"
+        });
+    } else {
+        loan.loan_state = req.body.loan_state;
+    }
+    loan.save((err, data) => {
         if (err) {
             return res.status(400).json({
                 error: errorHandler(err)

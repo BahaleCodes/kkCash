@@ -1,16 +1,39 @@
 const express = require('express');
 const router = express.Router();
 
-const { create, loanById, read, update, list } = require('../controllers/loan');
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
-const { userById } = require('../controllers/user');
+const { userById, addLoanToUserHistory } = require('../controllers/user');
+const { create, listLoans, getStatusValue, updateLoanStatus, loanById } = require('../controllers/loan');
 
-router.get('/loan/view/:loanInfoId/:userId', requireSignin, isAuth, read);
-router.post('/loan/create/:userId', requireSignin, isAuth, create);
-router.put('/loan/update/:loanInfoId/:userId', requireSignin, isAuth, update);
-router.get('/loan/all/:userId', requireSignin, isAuth, isAdmin, list);
+router.post(
+    '/loan/create/:userId', 
+    requireSignin, 
+    isAuth,
+    addLoanToUserHistory,
+    create
+);
+router.get(
+    '/loan/list/:userId', 
+    requireSignin, 
+    isAuth, 
+    isAdmin, 
+    listLoans
+);
+router.get(
+    "/loan/status-values/:userId",
+    requireSignin,
+    isAuth,
+    getStatusValue
+);
+router.put(
+    "/loan/update-status/:loanId/:userId",
+    requireSignin,
+    isAuth,
+    isAdmin,
+    updateLoanStatus
+);
 
-router.param('loanInfoId', loanById);
+router.param('loanId', loanById);
 router.param('userId', userById);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const { errorHandler } = require('../helpers/dbErrorHandler');
-const { Loan } = require('../models/loan');
+const Loan = require('../models/loan');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -19,7 +19,7 @@ exports.read = (req, res) => {
     return res.json(req.profile);
 };
 exports.update = (req, res) => {
-    const { first_name, last_name, email, phone_number, password, idNum, home_language, marital_status, home_status, dependants } = req.body;
+    const { first_name, last_name, email, phone_number, idNum, home_language, marital_status, home_status, dependents, address, employment, finances, banking, loan } = req.body;
     User.findOne({ _id: req.profile._id }, (err, user) => {
         if (err || !user) {
             return res.status(400).json({
@@ -87,21 +87,27 @@ exports.update = (req, res) => {
         } else {
             user.home_status = home_status;
         }
-        if (!dependants) {
+        if (!dependents) {
             return res.status(400).json({
-                error: 'Dependants is required'
+                error: 'Dependents are required'
             });
         } else {
-            user.dependants = dependants;
+            user.dependents = dependents;
         }
-        if (password) {
-            if (password.length < 6) {
-                return res.status(400).json({
-                    error: 'Password should be min 6 characters long'
-                });
-            } else {
-                user.password = password;
-            }
+        if (address) {
+            user.address = address;
+        }
+        if (employment) {
+            user.employment = employment;
+        }
+        if (banking) {
+            user.banking = banking;
+        }
+        if (finances) {
+            user.finances = finances;
+        }
+        if (loan) {
+            user.loan = loan;
         }
 
         user.save((err, updatedUser) => {
@@ -118,22 +124,12 @@ exports.update = (req, res) => {
     });
 };
 
-exports.addOrderToUserHistory = (req, res, next) => {
-    let history = [];
+exports.addLoanToUserHistory = (req, res, next) => {
+    let loan_history = [];
 
-    req.body.loan.forEach(item => {
-        loan_history.push({
-            _id: item._id,
-            amount: items.loan,
-            duration: items.duration,
-            repay_date: items.repay_date,
-            interest_rate: items.interest_rate,
-            approved: items.approved,
-            state: items.state
-        });
-    });
-
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { history: history } }, { new: true }, (error, data) => {
+    loan_history.push(req.body);
+    
+    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { loan_history: loan_history } }, { new: true }, (error, data) => {
         if (error) {
             return res.status(400).json({
                 error: 'Could not update user purchase history'
@@ -143,16 +139,16 @@ exports.addOrderToUserHistory = (req, res, next) => {
     });
 };
 
-exports.purchaseHistory = (req, res) => {
+exports.loansHistory = (req, res) => {
     Loan.find({ user: req.profile._id })
-        .populate('user', '_id name')
+        .populate('user', '_id first_name')
         .sort('-created')
-        .exec((err, orders) => {
+        .exec((err, loans) => {
             if (err) {
                 return res.status(400).json({
-                    error: errorHandler(err)
+                    error: err
                 });
             }
-            res.json(orders);
+            res.json(loans);
         });
 };

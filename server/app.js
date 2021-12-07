@@ -8,6 +8,7 @@ const expressValidator = require('express-validator');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 const addressRoutes = require('./routes/address');
 const bankRoutes = require('./routes/banking');
 const employmentRoutes = require('./routes/employment');
@@ -27,7 +28,6 @@ mongoose
     })
     .then(() => console.log('DB Connected'));
 
-
 // middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -42,6 +42,7 @@ app.use('/api', bankRoutes);
 app.use('/api', financesRoutes);
 app.use('/api', employmentRoutes);
 app.use('/api', loanRoutes);
+app.use('/api', userRoutes);
 
 const port = process.env.PORT || 8001;
 

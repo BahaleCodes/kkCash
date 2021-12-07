@@ -1,37 +1,26 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
 const loanSchema = new mongoose.Schema(
     {
-        amount: {
-            type: Number,
-            trim: true
-        },
+        transaction_id: {},
+        amount: { type: Number },
         duration: {
             type: String,
             trim: true,
-            required: true,
+            // required: true,
             maxlength: 10
         },
-        repay_date: {
+        repay_date: { type: String },
+        interest_rate: { type: Number },
+        loan_state: {
             type: String,
-            trim: true,
-            required: true,
-            maxlength: 20
+            default: "Not processed",
+            enum: ["Not processed", "Processing", "Approved", "Declined"]
         },
-        interest_rate: {
-            type: String,
-            maxlength: 10,
-            required: true
-        },
-        approved: {
-            type: Boolean,
-            required: true,
-            default: false
-        },
-        state: {
-            type: String,
-            required: true,
-            maxlength: 10
+        user: {
+            type: ObjectId,
+            ref: "User"
         }
     },
     { timestamps: true }

@@ -32,8 +32,7 @@ const bankingSchema = new mongoose.Schema(
             required: true,
             maxlength: 62
         }
-    },
-    { timestamps: true }
+    }
 );
 
 module.exports = mongoose.model("Banking", bankingSchema);

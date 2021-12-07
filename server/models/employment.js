@@ -10,10 +10,12 @@ const employmentSchema = new mongoose.Schema(
         },
         gross_income: {
             type: String,
+            required: true,
             required: true
         },
         net_income: {
             type: String,
+            required: true,
             required: true
         },
         income_frequency: {
