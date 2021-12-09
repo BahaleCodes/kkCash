@@ -5,8 +5,7 @@ const employmentSchema = new mongoose.Schema(
         emp_status: {
             type: String,
             trim: true,
-            required: true,
-            maxlength: 32
+            required: true
         },
         gross_income: {
             type: String,
@@ -21,86 +20,72 @@ const employmentSchema = new mongoose.Schema(
         income_frequency: {
             type: String,
             tring: true,
-            required: true,
-            maxlength: 32
+            required: true
         },
         salary_day: {
             type: String,
             required: true,
-            trim: true,
-            maxlength: 20
+            trim: true
         },
         work_number: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 10
+            required: false
         },
         university: {
             type: String,
             required: false,
-            maxlength: 52,
             trim: true
         },
         academic_year: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 7
+            required: false
         },
         course_duration: {
             type: String,
             required: false,
-            trim: true,
-            maxlength: 8
+            trim: true
         },
         division: {
             type: String,
             required: false,
-            trim: true,
-            maxlength: 52
+            trim: true
         },
         service_time: {
             type: String,
             required: false,
-            maxlength: 8,
             trim: true
         },
         emp_type: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 20
+            required: false
         },
         employer_name: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 52
+            required: false
         },
         emp_industry: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 40
+            required: false
         },
         emp_position: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 40
+            required: false
         },
         time_with_employer: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 8
+            required: false
         },
         emp_duration: {
             type: String,
             trim: true,
-            required: false,
-            maxlength: 20
+            required: false
         } 
     }
 )

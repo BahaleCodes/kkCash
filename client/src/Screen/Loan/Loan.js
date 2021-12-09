@@ -11,6 +11,7 @@ import Address from "./Components/address";
 import Employment from "./Components/employment";
 import Finances from "./Components/finances";
 import Bank from "./Components/bank";
+import Spinner from "../../Components/UI/Spinner/Spinner";
 const baseURL = 'https://kk-cash-back.herokuapp.com/api/';
 
 const Loan = (props) => {
@@ -143,6 +144,10 @@ const Loan = (props) => {
     };
     const optNext = async (e) => {
         e.preventDefault();
+        // setData({
+        //     ...data,
+        //     loading: true
+        // });
         // await axios
         //     .post(`${baseURL}/signup`, {
         //         "first_name": data.firstName,
@@ -157,9 +162,10 @@ const Loan = (props) => {
         //         "password": data.password
         //     })
         //     .then((response) => {
-        //         alert(response.data);
+        //         console.log(response.data);
         //         setData({
         //             ...data,
+        //             loading: false,
         //             optData: false,
         //             addressData: true
         //         });
@@ -167,6 +173,11 @@ const Loan = (props) => {
         //     .catch(error => {
         //         alert(error);
         //         console.log(error);
+        //         setData({
+        //             ...data,
+        //             error: true,
+        //             errorMessage: error
+        //         })
         //     });
         setData({
             ...data,
@@ -176,6 +187,10 @@ const Loan = (props) => {
     };
     const addressNext = async (e) => {
         e.preventDefault();
+        // setData({
+        //     ...data,
+        //     loading: true
+        // });
         // await axios
         //     .post(`${baseURL}address/create/61a521885b49aef5a5661961`,
         //         {
@@ -193,16 +208,21 @@ const Loan = (props) => {
         //         }
         //     )
         //     .then((response) => {
-        //         alert(JSON.stringify(response.data));
         //         setData({
         //             ...data,
-        //             optData: false,
-        //             addressData: true
+        //             loading: false,
+        //             addressData: false,
+        //             employmentData: true
         //         });
         //     })
         //     .catch(error => {
         //         alert(error);
         //         console.log(error);
+        //         setData({
+        //             ...data,
+        //             error: true,
+        //             errorMessage: error
+        //         });
         //     });
         setData({
             ...data,
@@ -212,125 +232,153 @@ const Loan = (props) => {
     };
     const employmentNext = async (e) => {
         e.preventDefault();
-        // await axios
-        //     .post(`${baseURL}employment/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "emp_status": data.emp_status,
-        //             "gross_income": data.gross_income,
-        //             "net_income": data.net_income,
-        //             "income_frequency": data.income_frequency,
-        //             "salary_day": data.salary_day === "Other" ? data.salary_day : data.other_salary_day,
-        //             "work_number": data.work_number,
-        //             "university": data.university === "Other" ? data.university : data.other_university,
-        //             "academic_year": data.academic_year === "Other" ? data.academic_year : data.other_academic_year,
-        //             "course_duration": data.course_duration === "Other" ? data.course_duration : data.other_course_duration,
-        //             "division": data.division,
-        //             "service_time": data.service_time === "Other" ? data.service_time : data.other_service_time,
-        //             "emp_type": data.emp_type,
-        //             "employer_name": data.employer_name,
-        //             "emp_industry": data.emp_industry === "Other" ? data.emp_industry : data.other_emp_industry,
-        //             "emp_position": data.emp_position === "Other" ? data.emp_position : data.other_emp_position,
-        //             "time_with_employer": data.time_with_employer === null ? data.other_time_with_employer : data.time_with_employer,
-        //             "emp_duration": data.emp_duration
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then((response) => {
-        //         alert(JSON.stringify(response.data));
-        //         setData({
-        //             ...data,
-        //             optData: false,
-        //             addressData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         alert(error);
-        //         console.log(error);
-        //     });
         setData({
             ...data,
-            employmentData: false,
-            financesData: true
+            loading: true
         });
+        await axios
+            .post(`http://localhost:8000/api/employment/create/61a521885b49aef5a5661961`,
+                {
+                    "emp_status": data.emp_status,
+                    "gross_income": data.gross_income,
+                    "net_income": data.net_income,
+                    "income_frequency": data.income_frequency,
+                    "salary_day": `${data.salary_day} - ${data.other_salary_day}`,
+                    "work_number": data.work_number,
+                    "university": `${data.university} - ${data.other_university}`,
+                    "academic_year": `${data.academic_year} - ${data.other_academic_year}`,
+                    "course_duration": `${data.course_duration} - ${data.other_course_duration}`,
+                    "division": data.division,
+                    "service_time": `${data.service_time} - ${data.other_service_time}`,
+                    "emp_type": data.emp_type,
+                    "employer_name": data.employer_name,
+                    "emp_industry": `${data.emp_industry} - ${data.other_emp_industry}`,
+                    "emp_position": `${data.emp_position} - ${data.other_emp_position}`,
+                    "time_with_employer": `${data.time_with_employer} - ${data.other_time_with_employer}`,
+                    "emp_duration": data.emp_duration
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
+                    }
+                }
+            )
+            .then((response) => {
+                alert(JSON.stringify(response.data));
+                setData({
+                    ...data,
+                    loading: false,
+                    employmentData: false,
+                    financesData: true
+                });
+            })
+            .catch(error => {
+                alert(error);
+                console.log(error);
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     employmentData: false,
+        //     financesData: true
+        // });
     };
     const financesNext = async (e) => {
         e.preventDefault();
-        // await axios
-        //     .post(`${baseURL}address/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "monthly_rates": data.monthly_rates,
-        //             "groceries": data.groceries,
-        //             "commuting_costs": data.commuting_costs,
-        //             "loan_repayments": data.loan_repayments,
-        //             "child_maintenance": data.child_maintenance,
-        //             "desp_income": data.desp_income
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then((response) => {
-        //         alert(JSON.stringify(response.data));
-        //         setData({
-        //             ...data,
-        //             financesData: false,
-        //             bankData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         alert(error);
-        //         console.log(error);
-        //     });
         setData({
             ...data,
-            financesData: false,
-            bankData: true
+            loading: true
         });
+        await axios
+            .post(`${baseURL}finances/create/61a521885b49aef5a5661961`,
+                {
+                    "monthly_rates": data.monthly_rates,
+                    "groceries": data.groceries,
+                    "commuting_costs": data.commuting_costs,
+                    "loan_repayments": data.loan_repayments,
+                    "child_maintenance": data.child_maintenance,
+                    "desp_income": data.desp_income
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
+                    }
+                }
+            )
+            .then((response) => {
+                alert(JSON.stringify(response.data));
+                setData({
+                    ...data,
+                    financesData: false,
+                    bankData: true
+                });
+            })
+            .catch(error => {
+                alert(error);
+                console.log(error);
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     financesData: false,
+        //     bankData: true
+        // });
     };
     const bankNext = async (e) => {
         e.preventDefault();
-        // await axios
-        //     .post(`${baseURL}address/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "amount": data.amount,
-        //             "duration": data.duration,
-        //             "repay_date": data.repay_date,
-        //             "interest_rate": data.interest_rate,
-        //             "approved": false,
-        //             "state": "Open"
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then((response) => {
-        //         alert(JSON.stringify(response.data));
-        //         setData({
-        //             ...data,
-        //             bankData: false,
-        //             formData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         alert(error);
-        //         console.log(error);
-        //     });
         setData({
             ...data,
-            bankData: false,
-            formDone: true
+            loading: true
         });
+        await axios
+            .post(`${baseURL}bank/create/61a521885b49aef5a5661961`,
+                {
+                    "amount": data.amount,
+                    "duration": data.duration,
+                    "repay_date": data.repay_date,
+                    "interest_rate": data.interest_rate,
+                    "approved": false,
+                    "state": "Open"
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
+                    }
+                }
+            )
+            .then((response) => {
+                alert(JSON.stringify(response.data));
+                setData({
+                    ...data,
+                    bankData: false,
+                    formData: true
+                });
+            })
+            .catch(error => {
+                alert(error);
+                console.log(error);
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     bankData: false,
+        //     formDone: true
+        // });
     };
 
     const personalBack = (e) => {
@@ -374,8 +422,35 @@ const Loan = (props) => {
             bankData: false
         });
     };
-    const handleSubmit = () => {
-        alert("DONE");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await axios
+            .post(`${baseURL}loan/create/61a521885b49aef5a5661961`,
+                {
+                    "amount": data.amount,
+                    "duration": data.duration,
+                    "repay_date": data.repay_date,
+                    "interest_rate": data.interest_rate
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
+                    }
+                }
+            )
+            .then((response) => {
+                alert(JSON.stringify(response.data));
+                setData({
+                    ...data,
+                    bankData: false,
+                    formData: true
+                });
+            })
+            .catch(error => {
+                alert(error);
+                console.log(error);
+            });
     };
     const formComplete = (
         <div className='body-padding'>
@@ -392,11 +467,11 @@ const Loan = (props) => {
     const rejectDiv = (
         <div>Rejected</div>
     );
-    // const inputErrorForm = (
-    //     <div className='body-padding'>
-    //         <h2>We have ran into a error</h2>
-    //     </div>
-    // )
+    const inputErrorForm = (
+        <div className='body-padding'>
+            <h2>We have ran into a error</h2>
+        </div>
+    )
     return (
         <div style={{
             marginTop: "9rem"
@@ -415,7 +490,7 @@ const Loan = (props) => {
                                 <h3>Amount Due: R{state.amount_due}</h3>
                                 <h3>Interest Rate: {parseFloat(state.rate) * 100}%</h3>
                                 <br />
-                                <form className='form-section' validate onSubmit={handleSubmit}>
+                                <form className='form-section' validate="true" onSubmit={handleSubmit}>
                                     {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.addressData && !data.employmentData && !data.financesData && !data.formDone && data.personalData &&
                                         <Personal
                                             firstName={data.firstName}
@@ -513,7 +588,8 @@ const Loan = (props) => {
                                     }
                                     {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.addressData && !data.employmentData && !data.financesData && data.formDone && formComplete}
                                     {!data.loading && !data.error && !data.done && data.reject && rejectDiv}
-
+                                    {data.loading && <Spinner />}
+                                    {data.error && inputErrorForm}
                                 </form>
                             </div>
                             : data.reject
