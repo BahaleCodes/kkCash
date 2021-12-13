@@ -31,12 +31,12 @@ const NavLinks = () => {
 			)}
 			{!auth.isLoggedIn && (
 				<li>
-					<NavLink to="/auth">AUTHENTICATE</NavLink>
+					<NavLink className='btn-custom' to="/auth">Log in</NavLink>
 				</li>
 			)}
 			{auth.isLoggedIn && (
 				<li>
-					<button onClick={auth.logout}>LOGOUT</button>
+					<button className='btn-custom' onClick={auth.logout}>LOGOUT</button>
 				</li>
 			)}
 		</ul>
