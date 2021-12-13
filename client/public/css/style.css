@@ -59,10 +59,11 @@ hr {
 	width: 70px;
 	text-align: center;
 	position: relative;
-	background: #0071c5;
+	/* background: #0071c5; */
 	margin-bottom: 20px;
 	border: 0;
 }
+
 /* Navigation */
 #menu {
   padding: 15px;
