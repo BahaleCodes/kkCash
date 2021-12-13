@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import ProgressBar from "../../shared/components/UIElements/ProgressBar/ProgressBar";
-import { useParams } from "react-router";
 
 import classes from './Loan.module.css';
 import Address from "./Components/Address";
@@ -12,10 +11,11 @@ import Spinner from "../../shared/components/UIElements/Spinner/LoadingSpinner";
 import Auth from "../Auth/Auth";
 import { useAuth } from "../../shared/hooks/auth-hook";
 import { Link } from "react-router-dom";
-const baseURL = 'http://localhost:8000/api/';
+// const baseURL = 'https://kk-cash-back.herokuapp.com/api/';
+const baseURL = 'http://localhost:800/api/';
 
 const Loan = (props) => {
-	const { token, login, logout, userId } = useAuth();
+	const { token, userId } = useAuth();
     const { state } = props.location;
     const [data, setData] = useState({
         loading: false,
