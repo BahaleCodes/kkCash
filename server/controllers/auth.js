@@ -17,7 +17,7 @@ exports.signup = (req, res) => {
         user.hashed_password = undefined;
         res.json({
             token,
-            userId: _id,
+            userId: user._id,
             user
         });
     })
@@ -73,5 +73,3 @@ exports.isAdmin = (req, res, next) => {
     }
     next();
 }
-
-// Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTZkODBjNzgwYTc3OWEwNTNmYmM3NzUiLCJpYXQiOjE2MzQ2NDg3MDJ9.mPX8KIqSYvM94E-z1uXlwSCIeya3Qk9JgqxcOZCb_dA

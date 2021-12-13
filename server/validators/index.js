@@ -30,8 +30,8 @@ exports.userSignupValidator = (req, res, next) => {
     req.check('password')
         .isLength({ min: 8 })
         .withMessage('Password must contain at least 8 characters')
-        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/)
-        .withMessage('Password must contain a mixture of characters ( Numbers, Caps, Symbols )');
+        // .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/)
+        // .withMessage('Password must contain a mixture of characters ( Numbers, Caps, Symbols )');
     const errors = req.validationErrors();
     if (errors) {
         const firstError = errors.map(error => error.msg)[0];
