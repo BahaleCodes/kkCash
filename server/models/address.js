@@ -1,4 +1,5 @@
 const  mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema;
 
 const addressSchema = new mongoose.Schema(
     {
@@ -30,8 +31,13 @@ const addressSchema = new mongoose.Schema(
             trim: true,
             required: true,
             maxlength: 5
+        },
+        user: {
+            type: ObjectId,
+            ref: "User"
         }
-    }
+    },
+    { timestamps: true }
 );
 
 module.exports = mongoose.model("Address", addressSchema);

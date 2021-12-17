@@ -16,7 +16,6 @@ exports.loanById = (req, res, next, id) => {
     });
 };
 exports.create = (req, res) => {
-    console.log('CREATE ORDER: ', req.body);
     req.body.user = req.profile;
     const loan = new Loan(req.body);
     loan.save((error, data) => {

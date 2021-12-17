@@ -13,6 +13,7 @@ exports.employmentById = (req, res, next, id) => {
     });
 };
 exports.create = (req, res) => {
+    req.body.user = req.profile;
     const employment = new Employment(req.body);
     employment.save((err, data) => {
         if (err) {
@@ -66,7 +67,7 @@ exports.update = (req, res) => {
     employment.save((err, data) => {
         if (err) {
             return res.status(400).json({
-                error: "ERROR! Updating Banking Details Failed."
+                error: "ERROR! Updating Employment Details Failed."
             });
         }
         res.json(data);

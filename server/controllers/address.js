@@ -13,6 +13,7 @@ exports.addressById = (req, res, next, id) => {
     });
 };
 exports.create = (req, res) => {
+    req.body.user = req.profile;
     const address = new Address(req.body);
     address.save((err, data) => {
         if (err) {
@@ -20,8 +21,8 @@ exports.create = (req, res) => {
                 error: errorHandler(err)
             });
         }
-        res.json({ data });
-    });
+        res.json(data);
+    })
 };
 exports.read = (req, res) => {
     return res.json(req.address);
@@ -74,12 +75,15 @@ exports.update = (req, res) => {
     });
 };
 exports.list = (req, res) => {
-    Address.find().exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: errorHandler(err)
-            });
-        }
-        res.json(data);
-    });
+    Address.find()
+        .populate('user', '_id name first_name last_name idNum')
+        .sort('-created')
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: errorHandler(err)
+                });
+            }
+            res.json(data);
+        });
 };

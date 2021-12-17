@@ -1,6 +1,5 @@
 const { v1: uuidv1 } = require('uuid');
 const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Schema;
 const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema(
@@ -59,28 +58,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        // After the OPT section, we send the POST request to api/user/
-        // Foreign Keys are not required but whenever they are sent, it comes as a PUT request to the api/user/:userId
-        address: {
-            type: ObjectId,
-            ref: "Address"
-        },
-        employment: {
-            type: ObjectId,
-            ref: "Employment"
-        },
-        finances: {
-            type: ObjectId,
-            ref: "Finances"
-        },
-        banking: {
-            type: ObjectId,
-            ref: "Banking"
-        },
-        loan: {
-            type: ObjectId,
-            ref: "Loan"
-        },
         hashed_password: {
             type: String,
             required: true
@@ -91,6 +68,22 @@ const userSchema = new mongoose.Schema(
             default: 0
         },
         loan_history: {
+            type: Array,
+            default: []
+        },
+        userAddress: {
+            type: Array,
+            default: []
+        },
+        userEmp: {
+            type: Array,
+            default: []
+        },
+        userFinances: {
+            type: Array,
+            default: []
+        },
+        userBank: {
             type: Array,
             default: []
         }

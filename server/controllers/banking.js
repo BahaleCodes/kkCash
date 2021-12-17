@@ -13,15 +13,16 @@ exports.bankingInfoById = (req, res, next, id) => {
     });
 };
 exports.create = (req, res) => {
-    const banking = new Banking(req.body);
-    banking.save((err, data) => {
-        if (err) {
+    req.body.user = req.profile;
+    const bank = new Banking(req.body);
+    bank.save((error, data) => {
+        if (error) {
             return res.status(400).json({
-                error: errorHandler(err)
+                error: error
             });
         }
-        res.json({ data });
-    });
+        res.json(data);
+    })
 };
 exports.read = (req, res) => {
     return res.json(req.banking);

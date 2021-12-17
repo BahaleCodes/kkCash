@@ -13,6 +13,7 @@ exports.financesById = (req, res, next, id) => {
     });
 };
 exports.create = (req, res) => {
+    req.body.user = req.profile;
     const finances = new Finances(req.body);
     finances.save((err, data) => {
         if (err) {
@@ -73,7 +74,7 @@ exports.update = (req, res) => {
     finances.save((err, data) => {
         if (err) {
             return res.status(400).json({
-                error: "ERROR! Updating Banking Details Failed."
+                error: `ERROR! Updating Financial Details Failed.${err}`
             });
         }
         res.json(data);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
 const financesSchema = new mongoose.Schema(
     {
@@ -25,8 +26,13 @@ const financesSchema = new mongoose.Schema(
         desp_income: {
             type: String,
             required: true
+        },
+        user: {
+            type: ObjectId,
+            ref: "User"
         }
-    }
+    },
+    { timestamps: true }
 );
 
 module.exports = mongoose.model("Finances", financesSchema);

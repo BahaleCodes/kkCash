@@ -1,6 +1,10 @@
 const User = require('../models/user');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const Loan = require('../models/loan');
+const Address = require('../models/address');
+const banking = require('../models/banking');
+const employment = require('../models/employment');
+const finances = require('../models/finances');
 
 exports.userById = (req, res, next, id) => {
     User.findById(id).exec((err, user) => {
@@ -19,7 +23,7 @@ exports.read = (req, res) => {
     return res.json(req.profile);
 };
 exports.update = (req, res) => {
-    const { first_name, last_name, email, phone_number, idNum, home_language, marital_status, home_status, dependents, address, employment, finances, banking, loan } = req.body;
+    const { first_name, last_name, email, phone_number } = req.body;
     User.findOne({ _id: req.profile._id }, (err, user) => {
         if (err || !user) {
             return res.status(400).json({
@@ -54,62 +58,6 @@ exports.update = (req, res) => {
         } else {
             user.email = email;
         }
-        if (!idNum) {
-            return res.status(400).json({
-                error: 'ID Number is required'
-            });
-        } else if (idNum.length < 13 ) {
-            return res.status(400).json({
-                error: 'South African ID Number should have 13 digits'
-            });
-        }
-        else {
-            user.idNum = idNum;
-        }
-        if (!home_language) {
-            return res.status(400).json({
-                error: 'Home Language is required'
-            });
-        } else {
-            user.home_language = home_language;
-        }
-        if (!marital_status) {
-            return res.status(400).json({
-                error: 'Marital Status is required'
-            });
-        } else {
-            user.marital_status = marital_status;
-        }
-        if (!home_status) {
-            return res.status(400).json({
-                error: 'E-mail is required'
-            });
-        } else {
-            user.home_status = home_status;
-        }
-        if (!dependents) {
-            return res.status(400).json({
-                error: 'Dependents are required'
-            });
-        } else {
-            user.dependents = dependents;
-        }
-        if (address) {
-            user.address = address;
-        }
-        if (employment) {
-            user.employment = employment;
-        }
-        if (banking) {
-            user.banking = banking;
-        }
-        if (finances) {
-            user.finances = finances;
-        }
-        if (loan) {
-            user.loan = loan;
-        }
-
         user.save((err, updatedUser) => {
             if (err) {
                 console.log('USER UPDATE ERROR', err);
@@ -126,9 +74,7 @@ exports.update = (req, res) => {
 
 exports.addLoanToUserHistory = (req, res, next) => {
     let loan_history = [];
-
     loan_history.push(req.body);
-    
     User.findOneAndUpdate({ _id: req.profile._id }, { $push: { loan_history: loan_history } }, { new: true }, (error, data) => {
         if (error) {
             return res.status(400).json({
@@ -138,10 +84,57 @@ exports.addLoanToUserHistory = (req, res, next) => {
         next();
     });
 };
-
+exports.addBankingToUserHistory = (req, res, next) => {
+    let userBank = [];
+    userBank.push(req.body);
+    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userBank: userBank } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
+exports.addEmpToUserHistory = (req, res, next) => {
+    let userEmp = [];
+    userEmp.push(req.body);
+    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userEmp: userEmp } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
+exports.addFInancesToUserHistory = (req, res, next) => {
+    let userFinances = [];
+    userFinances.push(req.body);
+    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userFinances: userFinances } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
+exports.addAddressToUserAddress = (req, res, next) => {
+    let userAddress = [];
+    userAddress.push(req.body);
+    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userAddress: userAddress } }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update user purchase history'
+            });
+        }
+        next();
+    });
+};
 exports.loansHistory = (req, res) => {
     Loan.find({ user: req.profile._id })
-        .populate('user', '_id first_name')
+        .populate('user', '_id first_name last_name')
         .sort('-created')
         .exec((err, loans) => {
             if (err) {
@@ -150,5 +143,57 @@ exports.loansHistory = (req, res) => {
                 });
             }
             res.json(loans);
+        });
+};
+exports.addressByUser = (req, res) => {
+    Address.find({ user: req.profile._id })
+        .populate('user', '_id first_name last_name')
+        .sort('-created')
+        .exec((err, address) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.json(address);
+        });
+};
+exports.bankByUser = (req, res) => {
+    banking.find({ user: req.profile._id })
+        .populate('user', '_id first_name last_name')
+        .sort('-created')
+        .exec((err, bank) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.json(bank);
+        });
+};
+exports.empByUser = (req, res) => {
+    employment.find({ user: req.profile._id })
+        .populate('user', '_id first_name last_name')
+        .sort('-created')
+        .exec((err, bank) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.json(bank);
+        });
+};
+exports.financesByUser = (req, res) => {
+    finances.find({ user: req.profile._id })
+        .populate('user', '_id first_name last_name idNum')
+        .sort('-created')
+        .exec((err, bank) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.json(bank);
         });
 };
