@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
-import ProgressBar from "../../shared/components/UIElements/ProgressBar/ProgressBar";
+import { Link } from "react-router-dom";
 
 import classes from './Loan.module.css';
+import ProgressBar from "../../shared/components/UIElements/ProgressBar/ProgressBar";
 import Address from "./Components/Address";
 import Employment from "./Components/Employment";
 import Finances from "./Components/Finances";
 import Bank from "./Components/Bank";
 import Spinner from "../../shared/components/UIElements/Spinner/LoadingSpinner";
 import Auth from "../Auth/Auth";
+
 import { useAuth } from "../../shared/hooks/auth-hook";
-import { Link } from "react-router-dom";
 
 // const baseURL = 'https://kk-cash-back.herokuapp.com/api/';
-const baseURL = 'http://localhost:800/api/';
+const baseURL = 'http://localhost:8000/api/';
 
 const Loan = (props) => {
-	const { token, userId } = useAuth();
+    const { token, userId } = useAuth();
     const { state } = props.location;
     const [data, setData] = useState({
         loading: false,
@@ -98,22 +99,37 @@ const Loan = (props) => {
             [event.target.name]: event.target.value
         });
     };
-    useEffect(() => {
-        setData({
-            ...data,
-            loanAmount: props.amount,
-            loanDuration: props.duration,
-            loanDue: props.amount_due
-        });
-        console.log(new Date(state.repaymentDay));
-    }, []);
     const handleConcent = (e) => {
-        e.preventDefault();
-        setData({
-            ...data,
-            concent: true,
-            reject: false
-        });
+        // e.preventDefault();
+        fetch(`${baseURL}address/by/user/${userId}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then((res) => {
+                if (res[0]) {
+                    setData({
+                        ...data,
+                        street_name: res[0].street,
+                        suburb: res[0].suburb,
+                        city: res[0].city,
+                        province: res[0].province,
+                        postalcode: res[0].postal_code,
+                        addressId: res[0]._id,
+                        addressData: true,
+                        concent: true,
+                        reject: false
+                    });
+                }
+                setData({
+                    ...data,
+                    concent: true,
+                    reject: false
+                })
+            })
     };
     const handleRejection = (e) => {
         e.preventDefault();
@@ -124,202 +140,249 @@ const Loan = (props) => {
         });
         console.log(data);
     };
-
-    // const personalNext = async (e) => {
-    //     e.preventDefault();
-    //     setData({
-    //         ...data,
-    //         personalData: false,
-    //         optData: true
-    //     });
-    // };
-    // const optNext = async (e) => {
-    //     e.preventDefault();
-    // setData({
-    //     ...data,
-    //     loading: true
-    // });
-    // await axios
-    //     .post(`${baseURL}/signup`, {
-    //         "first_name": data.firstName,
-    //         "last_name": data.lastName,
-    //         "email": data.email,
-    //         "phone_number": data.phoneNumber,
-    //         "idNum": data.idNum,
-    //         "home_language": data.homeLanguage,
-    //         "marital_status": data.maritalStatus,
-    //         "home_status": data.homeStatus,
-    //         "dependents": data.dependents,
-    //         "password": data.password
-    //     })
-    //     .then((response) => {
-    //         console.log(response.data);
-    //         setData({
-    //             ...data,
-    //             loading: false,
-    //             optData: false,
-    //             addressData: true
-    //         });
-    //     })
-    //     .catch(error => {
-    //         setData({
-    //             ...data,
-    //             error: true,
-    //             errorMessage: error
-    //         })
-    //     });
-    //     setData({
-    //         ...data,
-    //         optData: false,
-    //         addressData: true
-    //     });
-    // };
     const addressNext = async (e) => {
         e.preventDefault();
-        // setData({
-        //     ...data,
-        //     loading: true
-        // });
-        // await axios
-        //     .post(`${baseURL}address/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "street": data.street_name,
-        //             "suburb": data.suburb,
-        //             "city": data.city,
-        //             "province": data.province,
-        //             "postal_code": data.postalcode
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then(() => {
-        //         setData({
-        //             ...data,
-        //             loading: false,
-        //             addressData: false,
-        //             employmentData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         setData({
-        //             ...data,
-        //             error: true,
-        //             errorMessage: error
-        //         });
-        //     });
         setData({
             ...data,
-            addressData: false,
-            employmentData: true
+            loading: true
         });
+        await axios
+            .post(`${baseURL}address/create/${userId}`,
+                {
+                    "street": data.street_name,
+                    "suburb": data.suburb,
+                    "city": data.city,
+                    "province": data.province,
+                    "postal_code": data.postalcode
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            .then(() => {
+                fetch(`${baseURL}employment/by/user/${userId}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    })
+                    .then(response => response.json())
+                    .then((res) => {
+                        if (res[0]) {
+                            setData({
+                                ...data,
+                                emp_status: res[0].emp_status,
+                                gross_income: res[0].gross_income,
+                                net_income: res[0].net_income,
+                                income_frequency: res[0].income_frequency,
+                                salary_day: res[0].salary_day,
+                                work_number: res[0].work_number,
+                                university: res[0].university,
+                                academic_year: res[0].academic_year,
+                                course_duration: res[0].course_duration,
+                                division: res[0].division,
+                                service_time: res[0].service_time,
+                                emp_type: res[0].emp_type,
+                                emplr_name: res[0].employer_name,
+                                emp_industry: res[0].emp_industry,
+                                emp_position: res[0].emp_position,
+                                time_with_employer: res[0].time_with_employer,
+                                emp_duration: res[0].emp_duration,
+                                empId: res[0]._id,
+                                addressData: false,
+                                employmentData: true
+                            });
+                        }
+                        setData({
+                            ...data,
+                            addressData: false,
+                            employmentData: true
+                        })
+                    })
+                //         setData({
+                //             ...data,
+                //             loading: false,
+                //             addressData: false,
+                //             employmentData: true
+                //         });
+            })
+            .catch(error => {
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     addressData: false,
+        //     employmentData: true
+        // });
     };
     const employmentNext = async (e) => {
         e.preventDefault();
-        // setData({
-        //     ...data,
-        //     loading: true
-        // });
-        // await axios
-        //     .post(`${baseURL}employment/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "emp_status": data.emp_status,
-        //             "gross_income": data.gross_income,
-        //             "net_income": data.net_income,
-        //             "income_frequency": data.income_frequency,
-        //             "salary_day": `${data.salary_day} - ${data.other_salary_day}`,
-        //             "work_number": data.work_number,
-        //             "university": `${data.university} - ${data.other_university}`,
-        //             "academic_year": `${data.academic_year} - ${data.other_academic_year}`,
-        //             "course_duration": `${data.course_duration} - ${data.other_course_duration}`,
-        //             "division": data.division,
-        //             "service_time": `${data.service_time} - ${data.other_service_time}`,
-        //             "emp_type": data.emp_type,
-        //             "employer_name": data.employer_name,
-        //             "emp_industry": `${data.emp_industry} - ${data.other_emp_industry}`,
-        //             "emp_position": `${data.emp_position} - ${data.other_emp_position}`,
-        //             "time_with_employer": `${data.time_with_employer} - ${data.other_time_with_employer}`,
-        //             "emp_duration": data.emp_duration
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then(() => {
-        //         setData({
-        //             ...data,
-        //             loading: false,
-        //             employmentData: false,
-        //             financesData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         setData({
-        //             ...data,
-        //             error: true,
-        //             errorMessage: error
-        //         });
-        //     });
         setData({
             ...data,
-            employmentData: false,
-            financesData: true
+            loading: true
         });
+        await axios
+            .post(`${baseURL}employment/create/${userId}`,
+                {
+                    "emp_status": data.emp_status,
+                    "gross_income": data.gross_income,
+                    "net_income": data.net_income,
+                    "income_frequency": data.income_frequency,
+                    "salary_day": `${data.salary_day} - ${data.other_salary_day}`,
+                    "work_number": data.work_number,
+                    "university": `${data.university} - ${data.other_university}`,
+                    "academic_year": `${data.academic_year} - ${data.other_academic_year}`,
+                    "course_duration": `${data.course_duration} - ${data.other_course_duration}`,
+                    "division": data.division,
+                    "service_time": `${data.service_time} - ${data.other_service_time}`,
+                    "emp_type": data.emp_type,
+                    "employer_name": data.employer_name,
+                    "emp_industry": `${data.emp_industry} - ${data.other_emp_industry}`,
+                    "emp_position": `${data.emp_position} - ${data.other_emp_position}`,
+                    "time_with_employer": `${data.time_with_employer} - ${data.other_time_with_employer}`,
+                    "emp_duration": data.emp_duration
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            .then(() => {
+                fetch(`${baseURL}finances/by/user/${userId}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    })
+                    .then(response => response.json())
+                    .then((res) => {
+                        if (res[0]) {
+                            setData({
+                                ...data,
+                                monthly_rates: res[0].monthly_rates,
+                                groceries: res[0].groceries,
+                                commuting_costs: res[0].commuting_costs,
+                                loan_repayments: res[0].loan_repayments,
+                                child_maintenance: res[0].child_maintenance,
+                                desp_income: res[0].desp_income,
+                                finId: res[0]._id,
+                                employmentData: false,
+                                financesData: true
+                            });
+                        }
+                        setData({
+                            ...data,
+                            employmentData: false,
+                            financesData: true
+                        })
+                    })
+                //         setData({
+                //             ...data,
+                //             loading: false,
+                //             employmentData: false,
+                //             financesData: true
+                //         });
+            })
+            .catch(error => {
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     employmentData: false,
+        //     financesData: true
+        // });
     };
     const financesNext = async (e) => {
         e.preventDefault();
-        // setData({
-        //     ...data,
-        //     loading: true
-        // });
-        // await axios
-        //     .post(`${baseURL}finances/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "monthly_rates": data.monthly_rates,
-        //             "groceries": data.groceries,
-        //             "commuting_costs": data.commuting_costs,
-        //             "loan_repayments": data.loan_repayments,
-        //             "child_maintenance": data.child_maintenance,
-        //             "desp_income": parseInt(data.net_income) - (
-        //                 parseInt(data.monthly_rates)
-        //                 + parseInt(data.groceries)
-        //                 + parseInt(data.commuting_costs)
-        //                 + parseInt(data.loan_repayments)
-        //                 + parseInt(data.child_maintenance)
-        //             ),
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then(() => {
-        //         setData({
-        //             ...data,
-        //             financesData: false,
-        //             bankData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         setData({
-        //             ...data,
-        //             error: true,
-        //             errorMessage: error
-        //         });
-        //     });
         setData({
             ...data,
-            financesData: false,
-            bankData: true
+            loading: true
         });
+        await axios
+            .post(`${baseURL}finances/create/${userId}`,
+                {
+                    "monthly_rates": data.monthly_rates,
+                    "groceries": data.groceries,
+                    "commuting_costs": data.commuting_costs,
+                    "loan_repayments": data.loan_repayments,
+                    "child_maintenance": data.child_maintenance,
+                    "desp_income": parseInt(data.net_income) - (
+                        parseInt(data.monthly_rates)
+                        + parseInt(data.groceries)
+                        + parseInt(data.commuting_costs)
+                        + parseInt(data.loan_repayments)
+                        + parseInt(data.child_maintenance)
+                    ),
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            .then(() => {
+                fetch(`${baseURL}bank/by/user/${userId}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    })
+                    .then(response => response.json())
+                    .then((res) => {
+                        if (res[0]) {
+                            setData({
+                                ...data,
+                                bank_name: res[0].bank_name,
+                                acc_num: res[0].acc_num,
+                                acc_type: res[0].acc_type,
+                                branch_code: res[0].branch_num,
+                                acc_holder: res[0].acc_holder,
+                                bankId: res[0]._id,
+                                financesData: false,
+                                bankData: true
+                            });
+                        }
+                        setData({
+                            ...data,
+                            financesData: false,
+                            bankData: true
+                        })
+                    })
+                //         setData({
+                //             ...data,
+                //             financesData: false,
+                //             bankData: true
+                //         });
+            })
+            .catch(error => {
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     financesData: false,
+        //     bankData: true
+        // });
     };
     const bankNext = async (e) => {
         e.preventDefault();
@@ -327,41 +390,41 @@ const Loan = (props) => {
             ...data,
             loading: true
         });
-        // await axios
-        //     .post(`${baseURL}bank/create/61a521885b49aef5a5661961`,
-        //         {
-        //             "bank_name": data.bank_name,
-        //             "acc_num": data.acc_num,
-        //             "acc_type": data.acc_type,
-        //             "branch_num": data.branch_code,
-        //             "acc_holder": data.acc_holder
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
-        //             }
-        //         }
-        //     )
-        //     .then(() => {
-        //         setData({
-        //             ...data,
-        //             bankData: false,
-        //             formData: true
-        //         });
-        //     })
-        //     .catch(error => {
-        //         setData({
-        //             ...data,
-        //             error: true,
-        //             errorMessage: error
-        //         });
-        //     });
-        setData({
-            ...data,
-            bankData: false,
-            formDone: true
-        });
+        await axios
+            .post(`${baseURL}bank/create/${userId}`,
+                {
+                    "bank_name": data.bank_name,
+                    "acc_num": data.acc_num,
+                    "acc_type": data.acc_type,
+                    "branch_num": data.branch_code,
+                    "acc_holder": data.acc_holder
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            .then(() => {
+                setData({
+                    ...data,
+                    bankData: false,
+                    formData: true
+                });
+            })
+            .catch(error => {
+                setData({
+                    ...data,
+                    error: true,
+                    errorMessage: error
+                });
+            });
+        // setData({
+        //     ...data,
+        //     bankData: false,
+        //     formDone: true
+        // });
     };
 
     // const personalBack = (e) => {
@@ -408,7 +471,7 @@ const Loan = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await axios
-            .post(`${baseURL}loan/create/61a521885b49aef5a5661961`,
+            .post(`${baseURL}loan/create/${userId}`,
                 {
                     "amount": data.amount,
                     "duration": data.duration,
@@ -418,7 +481,7 @@ const Loan = (props) => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWE1MjE4ODViNDlhZWY1YTU2NjE5NjEiLCJpYXQiOjE2MzgyMTQ3OTd9.2qoLTCvaA8YLxPzRQKWHz9Alkm89P7MLrOLmSx_MlCE"
+                        "Authorization": `Bearer ${token}`
                     }
                 }
             )
@@ -451,6 +514,8 @@ const Loan = (props) => {
     const inputErrorForm = (
         <div className='body-padding'>
             <h2>We have ran into a error</h2>
+            {/* <h3>If this error persists then it is possibly caused by an application that was inturupted.</h3> */}
+            {/* <a href={`/${userId}/profile`} >Please proceed to </a> */}
         </div>
     )
     return (
@@ -470,8 +535,8 @@ const Loan = (props) => {
                                 {/* <h3>Loaned Amount: R{data.loanAmount}</h3> */}
                                 <h3>Amount Due: R{state.amount_due}</h3>
                                 {/* <h3>Interest Rate: {parseFloat(rate) * 100}%</h3> */}
-                                {/* <hr style={{ marginTop: "-10rem" }} /> */}
-                                
+                                {/* <hr  /> */}
+
                                 <form className='form-section' validate="true" onSubmit={handleSubmit}>
                                     {
                                         !token &&
@@ -582,7 +647,7 @@ const Loan = (props) => {
                                     {!data.loading && !data.error && !data.done && data.reject && rejectDiv}
                                     {data.loading && <Spinner />}
                                     {data.error && inputErrorForm}
-                                    {data.applied && 
+                                    {data.applied &&
                                         <React.Fragment>
                                             <h2>All done</h2>
                                             <h3>Go to Profile</h3>
