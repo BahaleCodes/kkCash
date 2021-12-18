@@ -4,7 +4,7 @@ import Application from "./Application/Application";
 import classes from './Header.module.css';
 import HowToApply from "./HowToApply/HowToApply";
 
-const Header = () => {
+const Header = (props) => {
     const [showHow, setShowHow] = useState(false);
     return (
         <div className='container'>
@@ -27,7 +27,7 @@ const Header = () => {
                         {
                             showHow
                                 ? <HowToApply />
-                                : <Application />
+                                : <Application profile={props.profile} />
                         }
                     </div>
                 </div>

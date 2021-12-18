@@ -19,8 +19,8 @@ const Employment = (props) => {
                 "On Benefits",
                 "Armed Forces"
             ]} />
-            <Input value={props.gross_income} name='gross_income' placeholder='Gross Monthly Income (Before Tax)' onChange={props.handleInputChange} />
-            <Input value={props.net_income} name='net_income' placeholder='Net Monthly Income (After Tax)' onChange={props.handleInputChange} />
+            <Input disabled={false} value={props.gross_income} name='gross_income' placeholder='Gross Monthly Income (Before Tax)' onChange={props.handleInputChange} />
+            <Input disabled={false} value={props.net_income} name='net_income' placeholder='Net Monthly Income (After Tax)' onChange={props.handleInputChange} />
 
             <SelectBox value={props.income_frequency} name='income_frequency' placeholder='Income Frequency' onChange={props.handleInputChange} questions={[
                 "Monthly",
@@ -274,10 +274,16 @@ const Employment = (props) => {
                     </div>
                     : ''
             }
-            <div className='btns'>
-                <button onClick={props.addressBack} className='btn-custom-neg'>Back</button>
-                <button onClick={props.employmentNext} className='btn-custom' >Next</button>
-            </div>
+            {
+                props.profile
+                    ? <div className='btns'>
+                        <button onClick={props.employmentNext} className='btn-custom'>Next</button>
+                    </div>
+                    : <div className='btns'>
+                        <button onClick={props.addressBack} className='btn-custom-neg'>Back</button>
+                        <button onClick={props.employmentNext} className='btn-custom'>Next</button>
+                    </div>
+            }
         </div>
     )
 }

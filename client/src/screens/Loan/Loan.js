@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
@@ -18,8 +18,15 @@ const baseURL = 'http://localhost:8000/api/';
 
 const Loan = (props) => {
     const { token, userId } = useAuth();
+    const [viewAddress, setViewAddress] = useState(false);
+    const [viewEmployment, setViewEmployment] = useState(false);
+    const [viewFinances, setViewFinances] = useState(false);
+    const [viewBank, setViewBank] = useState(false);
+    const [ loading, setLoading ] = useState(false);
+    const [ consent, setConsent ] = useState(false);
+    const [ reject, setReject ] = useState(false);
     const { state } = props.location;
-    const [data, setData] = useState({
+    let [data, setData] = useState({
         loading: false,
         error: false,
         done: false,
@@ -29,79 +36,72 @@ const Loan = (props) => {
         applied: false,
         errorMessage: "",
 
-        loanAmount: null,
-        loanDue: null,
-        loanDuration: null,
+        loanAmount: "",
+        loanDue: "",
+        loanDuration: "",
 
-        street_name: null,
-        suburb: null,
-        city: null,
-        province: null,
-        postalcode: null,
+        street_name: "",
+        suburb: "",
+        city: "",
+        province: "",
+        postalcode: "",
 
-        emp_status: null,
-        gross_income: null,
-        net_income: null,
-        income_frequency: null,
-        salary_day: null,
-        other_salary_day: null,
+        emp_status: "",
+        gross_income: "",
+        net_income: "",
+        income_frequency: "",
+        salary_day: "",
+        other_salary_day: "",
 
-        work_number: null,
+        work_number: "",
 
-        university: null,
-        other_university: null,
-        academic_year: null,
-        other_academic_year: null,
-        course_duration: null,
-        other_course_duration: null,
+        university: "",
+        other_university: "",
+        academic_year: "",
+        other_academic_year: "",
+        course_duration: "",
+        other_course_duration: "",
 
-        division: null,
-        service_time: null,
-        other_service_time: null,
+        division: "",
+        service_time: "",
+        other_service_time: "",
 
-        emp_type: null,
-        emplr_name: null,
-        emp_industry: null,
-        other_emp_industry: null,
-        emp_position: null,
-        other_emp_position: null,
-        time_with_employer: null,
-        other_time_with_employer: null,
-        emp_duration: null,
+        emp_type: "",
+        emplr_name: "",
+        emp_industry: "",
+        other_emp_industry: "",
+        emp_position: "",
+        other_emp_position: "",
+        time_with_employer: "",
+        other_time_with_employer: "",
+        emp_duration: "",
 
-        monthly_rates: null,
-        groceries: null,
-        commuting_costs: null,
-        loan_repayments: null,
-        child_maintenance: null,
-        desp_income: null,
+        monthly_rates: "",
+        groceries: "",
+        commuting_costs: "",
+        loan_repayments: "",
+        child_maintenance: "",
+        desp_income: "",
 
-        bank_name: null,
-        other_bank: null,
-        acc_num: null,
-        acc_type: null,
-        other_acc_type: null,
-        branch_code: null,
-        acc_holder: null,
+        bank_name: "",
+        other_bank: "",
+        acc_num: "",
+        acc_type: "",
+        other_acc_type: "",
+        branch_code: "",
+        acc_holder: "",
 
-        personalData: false,
-        optData: false,
-        addressData: true,
-        bankData: false,
-        employmentData: false,
-        financesData: false,
         formDone: false,
     });
-
     const handleInputChange = event => {
         setData({
             ...data,
             [event.target.name]: event.target.value
         });
     };
-    const handleConcent = (e) => {
+    const handleConcent = async () => {
         // e.preventDefault();
-        fetch(`${baseURL}address/by/user/${userId}`,
+        await fetch(`${baseURL}address/by/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -112,40 +112,31 @@ const Loan = (props) => {
             .then((res) => {
                 if (res[0]) {
                     setData({
-                        ...data,
                         street_name: res[0].street,
                         suburb: res[0].suburb,
                         city: res[0].city,
                         province: res[0].province,
                         postalcode: res[0].postal_code,
                         addressId: res[0]._id,
-                        addressData: true,
-                        concent: true,
-                        reject: false
                     });
+                    setConsent(true);
+                    setViewAddress(true);
+                    console.log(data);
                 }
-                setData({
-                    ...data,
-                    concent: true,
-                    reject: false
-                })
+                setConsent(true);
+                setViewAddress(true);
+                console.log(data);
             })
     };
     const handleRejection = (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            concent: false,
-            reject: true
-        });
+        setReject(true);
         console.log(data);
     };
     const addressNext = async (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            loading: true
-        });
+        console.log(data);
+        setLoading(true);
         await axios
             .post(`${baseURL}address/create/${userId}`,
                 {
@@ -174,7 +165,6 @@ const Loan = (props) => {
                     .then((res) => {
                         if (res[0]) {
                             setData({
-                                ...data,
                                 emp_status: res[0].emp_status,
                                 gross_income: res[0].gross_income,
                                 net_income: res[0].net_income,
@@ -193,42 +183,28 @@ const Loan = (props) => {
                                 time_with_employer: res[0].time_with_employer,
                                 emp_duration: res[0].emp_duration,
                                 empId: res[0]._id,
-                                addressData: false,
-                                employmentData: true
                             });
+                            setViewAddress(false);
+                            setViewEmployment(true);
+                            setLoading(false);
                         }
-                        setData({
-                            ...data,
-                            addressData: false,
-                            employmentData: true
-                        })
+                        setViewAddress(false);
+                        setViewEmployment(true);
+                        setLoading(false);
                     })
-                //         setData({
-                //             ...data,
-                //             loading: false,
-                //             addressData: false,
-                //             employmentData: true
-                //         });
             })
-            .catch(error => {
+            .catch((error) => {
                 setData({
                     ...data,
                     error: true,
-                    errorMessage: error
+                    errorMessage: JSON.stringify(error)
                 });
+                console.log(error);
             });
-        // setData({
-        //     ...data,
-        //     addressData: false,
-        //     employmentData: true
-        // });
     };
     const employmentNext = async (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            loading: true
-        });
+        setLoading(true);
         await axios
             .post(`${baseURL}employment/create/${userId}`,
                 {
@@ -237,18 +213,19 @@ const Loan = (props) => {
                     "net_income": data.net_income,
                     "income_frequency": data.income_frequency,
                     "salary_day": `${data.salary_day} - ${data.other_salary_day}`,
-                    "work_number": data.work_number,
-                    "university": `${data.university} - ${data.other_university}`,
-                    "academic_year": `${data.academic_year} - ${data.other_academic_year}`,
-                    "course_duration": `${data.course_duration} - ${data.other_course_duration}`,
-                    "division": data.division,
-                    "service_time": `${data.service_time} - ${data.other_service_time}`,
-                    "emp_type": data.emp_type,
-                    "employer_name": data.employer_name,
-                    "emp_industry": `${data.emp_industry} - ${data.other_emp_industry}`,
-                    "emp_position": `${data.emp_position} - ${data.other_emp_position}`,
-                    "time_with_employer": `${data.time_with_employer} - ${data.other_time_with_employer}`,
-                    "emp_duration": data.emp_duration
+                    
+                    "work_number": data.work_number ? data.work_number : "null" ,
+                    "university": data.university ? `${data.university} - ${data.other_university}` : "null" ,
+                    "academic_year": data.academic_year ? `${data.academic_year} - ${data.other_academic_year}` : "null",
+                    "course_duration": data.course_duration ? `${data.course_duration} - ${data.other_course_duration}` : "null",
+                    "division": data.division ? data.division : "null",
+                    "service_time": data.service_time ? `${data.service_time} - ${data.other_service_time}` : "null",
+                    "emp_type": data.emp_type ? data.emp_type : "null",
+                    "employer_name": data.employer_name ? data.employer_name : "null",
+                    "emp_industry": data.emp_industry ? `${data.emp_industry} - ${data.other_emp_industry}` : "null",
+                    "emp_position": data.emp_position ? `${data.emp_position} - ${data.other_emp_position}` : "null",
+                    "time_with_employer": data.time_with_employer ? `${data.time_with_employer} - ${data.other_time_with_employer}` :  "null",
+                    "emp_duration": data.emp_duration ? data.emp_duration : "null"
                 },
                 {
                     headers: {
@@ -269,7 +246,6 @@ const Loan = (props) => {
                     .then((res) => {
                         if (res[0]) {
                             setData({
-                                ...data,
                                 monthly_rates: res[0].monthly_rates,
                                 groceries: res[0].groceries,
                                 commuting_costs: res[0].commuting_costs,
@@ -277,22 +253,17 @@ const Loan = (props) => {
                                 child_maintenance: res[0].child_maintenance,
                                 desp_income: res[0].desp_income,
                                 finId: res[0]._id,
-                                employmentData: false,
-                                financesData: true
+                                loading: false
                             });
+                            setViewEmployment(false);
+                            setViewFinances(true);
+                            setLoading(false);
                         }
-                        setData({
-                            ...data,
-                            employmentData: false,
-                            financesData: true
-                        })
+                        setViewEmployment(false);
+                        setViewFinances(true);
+                        setLoading(false);
+                        console.log(data);
                     })
-                //         setData({
-                //             ...data,
-                //             loading: false,
-                //             employmentData: false,
-                //             financesData: true
-                //         });
             })
             .catch(error => {
                 setData({
@@ -301,18 +272,10 @@ const Loan = (props) => {
                     errorMessage: error
                 });
             });
-        // setData({
-        //     ...data,
-        //     employmentData: false,
-        //     financesData: true
-        // });
     };
     const financesNext = async (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            loading: true
-        });
+        setLoading(true);
         await axios
             .post(`${baseURL}finances/create/${userId}`,
                 {
@@ -348,28 +311,22 @@ const Loan = (props) => {
                     .then((res) => {
                         if (res[0]) {
                             setData({
-                                ...data,
                                 bank_name: res[0].bank_name,
                                 acc_num: res[0].acc_num,
                                 acc_type: res[0].acc_type,
                                 branch_code: res[0].branch_num,
                                 acc_holder: res[0].acc_holder,
                                 bankId: res[0]._id,
-                                financesData: false,
-                                bankData: true
+                                loading: false
                             });
+                            setViewFinances(false);
+                            setViewBank(true);
+                            setLoading(false);
                         }
-                        setData({
-                            ...data,
-                            financesData: false,
-                            bankData: true
-                        })
+                        setViewFinances(false);
+                        setViewBank(true);
+                        setLoading(false);
                     })
-                //         setData({
-                //             ...data,
-                //             financesData: false,
-                //             bankData: true
-                //         });
             })
             .catch(error => {
                 setData({
@@ -378,18 +335,10 @@ const Loan = (props) => {
                     errorMessage: error
                 });
             });
-        // setData({
-        //     ...data,
-        //     financesData: false,
-        //     bankData: true
-        // });
     };
     const bankNext = async (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            loading: true
-        });
+        setLoading(true);
         await axios
             .post(`${baseURL}bank/create/${userId}`,
                 {
@@ -407,36 +356,22 @@ const Loan = (props) => {
                 }
             )
             .then(() => {
+                setViewBank(false);
+                setLoading(false);
                 setData({
-                    ...data,
-                    bankData: false,
-                    formData: true
-                });
+                    done: true
+                })
             })
             .catch(error => {
                 setData({
-                    ...data,
                     error: true,
                     errorMessage: error
                 });
             });
-        // setData({
-        //     ...data,
-        //     bankData: false,
-        //     formDone: true
-        // });
     };
-
-    // const personalBack = (e) => {
-    //     e.preventDefault();
-    //     setData({
-    //         ...data,
-    //         personalData: true,
-    //         optData: false
-    //     });
-    // };
     const optBack = (e) => {
         e.preventDefault();
+        setViewAddress(false);
         setData({
             ...data,
             optData: true,
@@ -445,37 +380,28 @@ const Loan = (props) => {
     };
     const addressBack = (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            addressData: true,
-            employmentData: false
-        });
+        setViewAddress(true);
+        setViewEmployment(false);
         console.log(data);
     };
     const employmentBack = (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            employmentData: true,
-            financesData: false
-        });
+        setViewEmployment(true);
+        setViewFinances(false);
     };
     const financesBack = (e) => {
         e.preventDefault();
-        setData({
-            ...data,
-            financesData: true,
-            bankData: false
-        });
+        setViewFinances(true);
+        setViewBank(false);
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         await axios
             .post(`${baseURL}loan/create/${userId}`,
                 {
-                    "amount": data.amount,
-                    "duration": data.duration,
-                    "repay_date": data.repay_date,
+                    "amount": state.amount,
+                    "duration": state.duration,
+                    "repay_date": state.repaymentDay,
                     "interest_rate": data.interest_rate
                 },
                 {
@@ -514,8 +440,9 @@ const Loan = (props) => {
     const inputErrorForm = (
         <div className='body-padding'>
             <h2>We have ran into a error</h2>
-            {/* <h3>If this error persists then it is possibly caused by an application that was inturupted.</h3> */}
-            {/* <a href={`/${userId}/profile`} >Please proceed to </a> */}
+            <h3>We sincerely apologize for the inconvenience, the error has been logged to oue development team.</h3>
+            <h4>Please proceed to your profile page to continue the application there while our developers fix the error.</h4>
+            <Link to={`/${userId}/profile`} className='btn-custom'>Profile</Link>
         </div>
     )
     return (
@@ -526,7 +453,7 @@ const Loan = (props) => {
                 <div className='section-title'>
                     <h2>Loan Application</h2>
                     {
-                        data.concent
+                        consent
                             ? <div>
                                 <h4>We appreciate you trusting us with your personal information.</h4>
                                 <p>Please fill in the following form with your information.</p>
@@ -544,33 +471,20 @@ const Loan = (props) => {
                                             <Auth />
                                         </React.Fragment>
                                     }
-                                    {/* {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.addressData && !data.employmentData && !data.financesData && !data.formDone && data.personalData &&
-                                        <Personal
-                                            firstName={data.firstName}
-                                            lastName={data.lastName}
-                                            idNum={data.idNum}
-                                            homeLanguage={data.homeLanguage}
-                                            maritalStatus={data.maritalStatus}
-                                            email={data.email}
-                                            password={data.password}
+                                    
+                                    { viewAddress && 
+                                        <Address
+                                            street_name={data.street_name}
+                                            suburb={data.suburb}
+                                            city={data.city}
+                                            province={data.province}
+                                            postalcode={data.postalcode}
+                                            optBack={optBack}
+                                            addressNext={addressNext}
                                             handleInputChange={handleInputChange}
-                                            personalNext={personalNext}
                                         />
-                                    } */}
-                                    {/* {!data.loading && !data.error && !data.done && !data.reject && !data.bankData && !data.employmentData && !data.addressData && !data.financesData && !data.formDone && data.personalData && !token &&
-                                        <Opt
-                                            phoneNumber={data.phoneNumber}
-                                            homeStatus={data.homeStatus}
-                                            dependents={data.dependents}
-                                            handleInputChange={handleInputChange}
-                                            personalBack={personalBack}
-                                            optNext={optNext}
-                                        />
-                                        <React.Fragment>
-                                            <Auth />
-                                        </React.Fragment>
-                                    } */}
-                                    {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.employmentData && !data.addressData && !data.financesData && !data.formDone && data.bankData &&
+                                    }
+                                    { viewBank &&
                                         <Bank
                                             bank_name={props.bank_name}
                                             other_bank={props.other_bank}
@@ -584,19 +498,7 @@ const Loan = (props) => {
                                             bankNext={bankNext}
                                         />
                                     }
-                                    {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.employmentData && !data.financesData && !data.formDone && data.addressData &&
-                                        <Address
-                                            street_name={data.street_name}
-                                            suburb={data.suburb}
-                                            city={data.city}
-                                            province={data.province}
-                                            postalcode={data.postalcode}
-                                            optBack={optBack}
-                                            addressNext={addressNext}
-                                            handleInputChange={handleInputChange}
-                                        />
-                                    }
-                                    {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.addressData && !data.financesData && !data.formDone && data.employmentData &&
+                                    { viewEmployment &&
                                         <Employment
                                             emp_status={data.emp_status}
                                             gross_income={data.gross_income}
@@ -628,7 +530,7 @@ const Loan = (props) => {
                                             employmentNext={employmentNext}
                                         />
                                     }
-                                    {!data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.addressData && !data.employmentData && !data.formDone && data.financesData &&
+                                    { viewFinances &&
                                         <Finances
                                             gross_income={data.gross_income}
                                             net_income={data.net_income}
@@ -643,20 +545,20 @@ const Loan = (props) => {
                                             handleInputChange={handleInputChange}
                                         />
                                     }
-                                    {!data.applied && !data.loading && !data.error && !data.done && !data.reject && !data.optData && !data.bankData && !data.addressData && !data.employmentData && !data.financesData && data.formDone && formComplete}
-                                    {!data.loading && !data.error && !data.done && data.reject && rejectDiv}
-                                    {data.loading && <Spinner />}
+                                    {data.done && formComplete}
+                                    {reject && rejectDiv}
+                                    {loading && <Spinner />}
                                     {data.error && inputErrorForm}
                                     {data.applied &&
                                         <React.Fragment>
                                             <h2>All done</h2>
-                                            <h3>Go to Profile</h3>
+                                            <h3>Keep an eye open on your email and the Profile page for the status of your loan application.</h3>
                                             <Link to={`/${userId}/profile`} className='btn-custom'>Profile</Link>
                                         </React.Fragment>
                                     }
                                 </form>
                             </div>
-                            : data.reject
+                            : reject
                                 ? <div>
                                     <h4>Personal Information Concent Rejected</h4>
                                     <h4>Learn more about the <a className={classes.highlight} href='https://www.michalsons.com/focus-areas/privacy-and-data-protection/protection-of-personal-information-act-popia' >Protection of Personal Information Act</a>.</h4>

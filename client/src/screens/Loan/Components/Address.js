@@ -6,7 +6,7 @@ import ProgressBar from '../../../shared/components/UIElements/ProgressBar/Progr
 
 const Address = (props) => {
     return (
-        <div style={{marginTop: "10rem"}} className='body-padding'>
+        <div className='body-padding'>
             <h2>Current Address</h2>
             <ProgressBar width='25%' step={"3"} />
             <Input value={props.street_name} name='street_name' placeholder='Street Name' type='Text' onChange={props.handleInputChange} />
@@ -24,10 +24,16 @@ const Address = (props) => {
                 "Western Cape"
             ]} />
             <Input value={props.postalcode} name='postalcode' placeholder='Postal Code' type='Number' onChange={props.handleInputChange} />
-            <div className='btns'>
-                <button onClick={props.optBack} className='btn-custom-neg'>Back</button>
-                <button onClick={props.addressNext} className='btn-custom' >Next</button>
-            </div>
+            {
+                props.profile
+                    ? <div className='btns'>
+                        <button onClick={props.addressNext} className='btn-custom'>Next</button>
+                    </div>
+                    : <div className='btns'>
+                        <a href='/' className='btn-custom-neg'>Back</a>
+                        <button onClick={props.addressNext} className='btn-custom'>Next</button>
+                    </div>
+            }
         </div>
     );
 }

@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import classes from './Application.module.css';
 import Input from '../../../../shared/components/UIElements/Input/Input';
 import RangeSlider from '../../../../shared/components/UIElements/RangeSlider/RangeSlider';
+import { useAuth } from '../../../../shared/hooks/auth-hook';
+
+// const baseURL = 'https://kk-cash-back.herokuapp.com/api/';
+const baseURL = 'http://localhost:8000/api/';
 
 const Application = (props) => {
+    const { token, userId } = useAuth();
     const [startDate, setStartDate] = useState(new Date());
     const [data, setData] = useState({
         repaymentDay: null,
@@ -17,6 +23,7 @@ const Application = (props) => {
         interest: 0,
         showNumbers: false,
         filled: false,
+        applied: false,
         notify: false,
         notice: ""
     })
@@ -33,7 +40,7 @@ const Application = (props) => {
         let val = (parseInt(price) + parseInt(price * intrest_rate));
         let time = parseInt(data.duration);
         let repayDay = startDate.setDate(startDate.getDate() + (time));
-        if ((parseInt(data.amount)) > 500 && (parseInt(data.duration)) > 5 && (parseInt(data.amount)) < 2001 && (parseInt(data.duration)) < 31 ) {
+        if ((parseInt(data.amount)) > 500 && (parseInt(data.duration)) > 5 && (parseInt(data.amount)) < 2001 && (parseInt(data.duration)) < 31) {
             setData({
                 ...data,
                 amount_due: val,
@@ -66,14 +73,46 @@ const Application = (props) => {
                 notice: "Loan amount shouldn't be greater than R2000"
             })
         }
-        
+
         // console
     }
     const nextHandle = () => {
         installment();
     }
+    const loanSubmit = async (e) => {
+        e.preventDefault();
+        await axios
+            .post(`${baseURL}loan/create/${userId}`,
+                {
+                    "amount": data.amount,
+                    "duration": data.duration,
+                    "repay_date": data.repaymentDay,
+                    "interest_rate": data.rate
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            )
+            .then(() => {
+                setData({
+                    applied: true
+                });
+            })
+            .catch(error => {
+            });
+    };
     return (
         <div className={classes.cnt_body}>
+            {
+                data.applied
+                ? <React.Fragment>
+                    <h2>DOne</h2>
+                </React.Fragment>
+                : ''
+            }
             <div className={classes.row}>
                 <div className='col-md-3'>
                     <label>How Much (ZAR)?</label>
@@ -90,10 +129,10 @@ const Application = (props) => {
             </div>
             {
                 data.notify
-                ? <div>
-                    <h5>{data.notice}</h5>
-                </div>
-                : ""
+                    ? <div>
+                        <h5>{data.notice}</h5>
+                    </div>
+                    : ""
             }
             {
                 data.showNumbers
@@ -105,17 +144,28 @@ const Application = (props) => {
                         )} className='btn-custom'>Cancel</button>
                         <br />
                         <br />
-                        <Link to={{
-                            pathname: '/loan-application/',
-                            state: {
-                                amount_due: data.amount_due,
-                                duration: data.duration,
-                                amount: data.amount,
-                                interest: data.interest,
-                                rate: data.rate,
-                                repaymentDay: startDate.toString()
-                            }
-                        }} className='btn-custom'>Continue</Link>
+                        {
+                            props.profile
+                                ? <div>
+                                    <h3>Your loan application has been sent for review.</h3>
+                                    <h4>Please keep your eyes open for further confirmation on the results of your loan application</h4>
+                                    <h4>Once approved, you will be notified with an Email and shortly, your R{data.amount} will be paid into your bank account.</h4>
+                                    <button className='btn-custom' onClick={loanSubmit}>
+                                        Submit
+                                    </button>
+                                </div>
+                                : <Link to={{
+                                    pathname: '/loan-application/',
+                                    state: {
+                                        amount_due: data.amount_due,
+                                        duration: data.duration,
+                                        amount: data.amount,
+                                        interest: data.interest,
+                                        rate: data.rate,
+                                        repaymentDay: startDate.toString()
+                                    }
+                                }} className='btn-custom'>Continue</Link>
+                        }
                         <div className={classes.row}>
                             <div className={classes.col}>
                                 <h4>R{data.amount_due}</h4>

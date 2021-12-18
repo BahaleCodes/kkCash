@@ -38,10 +38,16 @@ const Bank = (props) => {
             }
             <Input value={props.branch_code} name='branch_code' placeholder='Branch Code' onChange={props.handleInputChange} />
             <Input value={props.acc_holder} name='acc_holder' placeholder='Account holder' onChange={props.handleInputChange} />
-            <div className='btns'>
-                <button onClick={props.financesBack} className='btn-custom-neg'>Back</button>
-                <button onClick={props.bankNext} className='btn-custom' >Next</button>
-            </div>
+            {
+                props.profile
+                    ? <div className='btns'>
+                        <button onClick={props.bankNext} className='btn-custom'>Next</button>
+                    </div>
+                    : <div className='btns'>
+                        <button onClick={props.financesBack} className='btn-custom-neg'>Back</button>
+                        <button onClick={props.bankNext} className='btn-custom'>Next</button>
+                    </div>
+            }
         </div>
     )
 }
