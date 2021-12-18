@@ -1,4 +1,4 @@
-body, html {
+/* body, html {
 	font-family: 'Open Sans', sans-serif;
 	text-rendering: optimizeLegibility !important;
 	-webkit-font-smoothing: antialiased !important;
@@ -7,7 +7,7 @@ body, html {
 	font-weight: 400;
 	width: 100% !important;
 	height: 100% !important;
-}
+} */
 h2, h3, h4 {
 	font-family: 'Raleway', sans-serif;
 }

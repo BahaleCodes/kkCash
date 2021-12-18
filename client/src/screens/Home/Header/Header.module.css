@@ -1,12 +1,12 @@
 .Header{
-    display: flex;
+    display: table;
     justify-content: center;
     align-items: center;
     height: 60vh;
     margin-top: 0rem;
 }
 .card {
-    width: 90%;
+    width: 100%;
     height: 80%;
     position: relative;
 }

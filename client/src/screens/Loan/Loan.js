@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
@@ -10,11 +10,11 @@ import Finances from "./Components/Finances";
 import Bank from "./Components/Bank";
 import Spinner from "../../shared/components/UIElements/Spinner/LoadingSpinner";
 import Auth from "../Auth/Auth";
+import { baseURL } from "../../URI";
 
 import { useAuth } from "../../shared/hooks/auth-hook";
 
-// const baseURL = 'https://kk-cash-back.herokuapp.com/api/';
-const baseURL = 'http://localhost:8000/api/';
+const URL = baseURL;
 
 const Loan = (props) => {
     const { token, userId } = useAuth();
@@ -101,7 +101,7 @@ const Loan = (props) => {
     };
     const handleConcent = async () => {
         // e.preventDefault();
-        await fetch(`${baseURL}address/by/user/${userId}`,
+        await fetch(`${URL}address/by/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -138,7 +138,7 @@ const Loan = (props) => {
         console.log(data);
         setLoading(true);
         await axios
-            .post(`${baseURL}address/create/${userId}`,
+            .post(`${URL}address/create/${userId}`,
                 {
                     "street": data.street_name,
                     "suburb": data.suburb,
@@ -154,7 +154,7 @@ const Loan = (props) => {
                 }
             )
             .then(() => {
-                fetch(`${baseURL}employment/by/user/${userId}`,
+                fetch(`${URL}employment/by/user/${userId}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -206,7 +206,7 @@ const Loan = (props) => {
         e.preventDefault();
         setLoading(true);
         await axios
-            .post(`${baseURL}employment/create/${userId}`,
+            .post(`${URL}employment/create/${userId}`,
                 {
                     "emp_status": data.emp_status,
                     "gross_income": data.gross_income,
@@ -235,7 +235,7 @@ const Loan = (props) => {
                 }
             )
             .then(() => {
-                fetch(`${baseURL}finances/by/user/${userId}`,
+                fetch(`${URL}finances/by/user/${userId}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -277,7 +277,7 @@ const Loan = (props) => {
         e.preventDefault();
         setLoading(true);
         await axios
-            .post(`${baseURL}finances/create/${userId}`,
+            .post(`${URL}finances/create/${userId}`,
                 {
                     "monthly_rates": data.monthly_rates,
                     "groceries": data.groceries,
@@ -300,7 +300,7 @@ const Loan = (props) => {
                 }
             )
             .then(() => {
-                fetch(`${baseURL}bank/by/user/${userId}`,
+                fetch(`${URL}bank/by/user/${userId}`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -340,7 +340,7 @@ const Loan = (props) => {
         e.preventDefault();
         setLoading(true);
         await axios
-            .post(`${baseURL}bank/create/${userId}`,
+            .post(`${URL}bank/create/${userId}`,
                 {
                     "bank_name": data.bank_name,
                     "acc_num": data.acc_num,
@@ -397,7 +397,7 @@ const Loan = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         await axios
-            .post(`${baseURL}loan/create/${userId}`,
+            .post(`${URL}loan/create/${userId}`,
                 {
                     "amount": state.amount,
                     "duration": state.duration,

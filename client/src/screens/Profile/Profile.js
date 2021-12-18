@@ -10,9 +10,11 @@ import Personal from './Components/Personal';
 import { useAuth } from '../../shared/hooks/auth-hook';
 import Header from '../Home/Header/Header';
 import LoadingSpinner from '../../shared/components/UIElements/Spinner/LoadingSpinner';
+import { baseURL } from '../../URI.js';
 
+const URL = baseURL;
 // const baseURL = 'https://kk-cash-back.herokuapp.com/api/';
-const baseURL = 'http://localhost:8000/api/';
+// const baseURL = 'http://localhost:8000/api/';
 
 const Profile = () => {
     const { token, userId } = useAuth();
@@ -79,7 +81,7 @@ const Profile = () => {
         bankId: ""
     });
     useEffect(() => {
-        fetch(`${baseURL}/user/${userId}`,
+        fetch(`${URL}user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -107,7 +109,7 @@ const Profile = () => {
         setData({
             loading: true
         });
-        await fetch(`${baseURL}/user/${userId}`,
+        await fetch(`${URL}/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -134,7 +136,7 @@ const Profile = () => {
         setData({
             loading: true
         });
-        await fetch(`${baseURL}address/by/user/${userId}`,
+        await fetch(`${URL}address/by/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -171,7 +173,7 @@ const Profile = () => {
         setData({
             loading: true
         });
-        await fetch(`${baseURL}employment/by/user/${userId}`,
+        await fetch(`${URL}employment/by/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -217,7 +219,7 @@ const Profile = () => {
         setData({
             loading: true
         });
-        await fetch(`${baseURL}finances/by/user/${userId}`,
+        await fetch(`${URL}finances/by/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -253,7 +255,7 @@ const Profile = () => {
         setData({
             loading: true
         });
-        await fetch(`${baseURL}bank/by/user/${userId}`,
+        await fetch(`${URL}bank/by/user/${userId}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -285,7 +287,7 @@ const Profile = () => {
 
     const updatePerson = async () => {
         await axios
-            .put(`${baseURL}user/${userId}`, {
+            .put(`${URL}user/${userId}`, {
                 "first_name": data.firstName,
                 "last_name": data.lastName,
                 "email": data.email,
@@ -318,7 +320,7 @@ const Profile = () => {
             loading: false
         });
         await axios
-            .post(`${baseURL}address/create/${userId}`, {
+            .post(`${URL}address/create/${userId}`, {
                 "street": data.street_name,
                 "suburb": data.suburb,
                 "city": data.city,
@@ -353,7 +355,7 @@ const Profile = () => {
             loading: false
         });
         await axios
-            .post(`${baseURL}employment/create/${userId}`, {
+            .post(`${URL}employment/create/${userId}`, {
                 "emp_status": data.emp_status,
                 "gross_income": data.gross_income,
                 "net_income": data.net_income,
@@ -397,7 +399,7 @@ const Profile = () => {
     };
     const postFin = async () => {
         await axios
-            .post(`${baseURL}finances/create/${userId}`, {
+            .post(`${URL}finances/create/${userId}`, {
                 "monthly_rates": data.monthly_rates,
                 "groceries": data.groceries,
                 "commuting_costs": data.commuting_costs,
@@ -437,7 +439,7 @@ const Profile = () => {
     };
     const postBank = async () => {
         await axios
-            .post(`${baseURL}bank/create/${userId}`, {
+            .post(`${URL}bank/create/${userId}`, {
                 "bank_name": data.bank_name,
                 "acc_num": data.acc_num,
                 "acc_type": data.acc_type,
@@ -470,7 +472,7 @@ const Profile = () => {
 
     const updateAddress = async () => {
         await axios
-            .put(`${baseURL}address/update/${data.addressId}/${userId}`, {
+            .put(`${URL}address/update/${data.addressId}/${userId}`, {
                 "street": data.street_name,
                 "suburb": data.suburb,
                 "city": data.city,
@@ -501,7 +503,7 @@ const Profile = () => {
     };
     const updateEmp = async () => {
         await axios
-            .put(`${baseURL}employment/update/${data.empId}/${userId}`, {
+            .put(`${URL}employment/update/${data.empId}/${userId}`, {
                 "emp_status": data.emp_status,
                 "gross_income": data.gross_income,
                 "net_income": data.net_income,
@@ -545,7 +547,7 @@ const Profile = () => {
     };
     const updateFin = async () => {
         await axios
-            .put(`${baseURL}finances/update/${data.finId}/${userId}`, {
+            .put(`${URL}finances/update/${data.finId}/${userId}`, {
                 "monthly_rates": data.monthly_rates,
                 "groceries": data.groceries,
                 "commuting_costs": data.commuting_costs,
@@ -581,7 +583,7 @@ const Profile = () => {
     };
     const updateBank = async () => {
         await axios
-            .put(`${baseURL}bank/create/${data.bankId}/${userId}`, {
+            .put(`${URL}bank/create/${data.bankId}/${userId}`, {
                 "bank_name": data.bank_name,
                 "acc_num": data.acc_num,
                 "acc_type": data.acc_type,
