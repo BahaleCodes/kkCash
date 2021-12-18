@@ -11,6 +11,7 @@ const loanSchema = new mongoose.Schema(
             // required: true,
             maxlength: 10
         },
+        apply_date: { type: String },
         repay_date: { type: String },
         interest_rate: { type: Number },
         loan_state: {
