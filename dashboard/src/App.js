@@ -7,14 +7,12 @@ import {
 } from 'react-router-dom';
 
 import Users from './user/pages/Users';
-import NewPlace from './places/pages/NewPlace';
-import UserPlaces from './places/pages/UserPlaces';
-import UpdatePlace from './places/pages/UpdatePlace';
+import Dashboard from './dashboard/Dashboard';
 import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
-import Dashboard from './dashboard/Dashboard';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
+import Loans from './loans/Loans';
 
 const App = () => {
 	const { token, login, logout, userId } = useAuth();
@@ -23,27 +21,20 @@ const App = () => {
 	if (token) {
 		routes = (
 			<Switch>
-				<Route path="/" exact>
-					<Users />
-				</Route>
-				<Route path="/user/:userId" exact>
-					<Users />
-				</Route>
-				<Route path="/loans">
-					<UpdatePlace />
-				</Route>
+				<Route path="/users" exact component={Users} />
+				<Route path="/loans" exact component={Loans} />
 				<Route path='/dashboard' exact component={Dashboard} />
-				<Redirect to="/" />
+				<Redirect to="/dashboard" />
 			</Switch>
 		);
 	} else {
 		routes = (
 			<Switch>
 				<Route path="/" exact>
-					<Users />
-				</Route>
-				<Route path="/:userId/places" exact>
-					<UserPlaces />
+					<div>
+						<h2>IF YOU ARE HERE AND YOU DON'T HAVE A LOG IN, I SUGGEST YOU GET A LOAN.</h2>
+						<a href='https://kk-cash.com/'>KK CASH LOANS</a>
+					</div>
 				</Route>
 				<Route path="/auth">
 					<Auth />

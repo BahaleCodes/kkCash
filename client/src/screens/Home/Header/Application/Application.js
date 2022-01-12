@@ -136,18 +136,18 @@ const Application = (props) => {
                                 </div>
                                 : <React.Fragment>
                                     <div className={classes.row}>
-                                        <div className='col-md-3'>
-                                            <label>How Much (ZAR)?</label>
+                                        <div className='col-md-12'>
+                                            <h4>How Much would you like to loan (ZAR)?</h4>
                                             <Input type={"Number"} value={data.amount} onChange={handleInputChange} name={"amount"} />
                                         </div>
-                                        <div className='col-md-3'>
+                                        {/* <div className='col-md-3'>
                                             <label>How Long (Days)?</label>
                                             <Input type={"Number"} value={data.duration} onChange={handleInputChange} name={"duration"} />
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className='col-md-12'>
                                         <RangeSlider min={0} max={2000} step={5} name={"amount"} onChange={handleInputChange} volume={data.amount} />
-                                        <RangeSlider min={0} max={30} step={1} name={"duration"} onChange={handleInputChange} volume={data.duration} />
+                                        {/* <RangeSlider min={0} max={30} step={1} name={"duration"} onChange={handleInputChange} volume={data.duration} /> */}
                                     </div>
                                     {
                                         data.notify

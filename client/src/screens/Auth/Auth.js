@@ -15,10 +15,14 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.css';
 
-const Auth = (props) => {
+const Auth = () => {
 	const auth = useContext(AuthContext);
 	const [isLoginMode, setIsLoginMode] = useState(true);
 	const { isLoading, error, sendRequest, clearError } = useHttpClient();
+	const [data, setData] = useState({
+		error: false,
+		errorMessage: ""
+	})
 	const [formState, inputHandler, setFormData] = useForm(
 		{
 			email: {
@@ -105,7 +109,6 @@ const Auth = (props) => {
 
 	const authSubmitHandler = async event => {
 		event.preventDefault();
-
 		if (isLoginMode) {
 			try {
 				const responseData = await sendRequest(
@@ -121,7 +124,7 @@ const Auth = (props) => {
 				);
 				auth.login(responseData.userId, responseData.token);
 			} catch (err) {
-				// alert("Failed to Login")
+				alert("Failed to Login")
 			}
 		} else {
 			console.log(formState.inputs.first_name.value);
@@ -150,126 +153,121 @@ const Auth = (props) => {
 				auth.login(responseData.userId, responseData.token);
 			}
 			catch (err) {
-				alert(`Failed to Sign up ${err}`);
+				alert(`Failed to Sign up ${err.response}`);
 				console.log(err);
 			}
 		}
 	};
-	const authForm = (
-		<React.Fragment>
-			<h2>Login Required</h2>
-			<hr />
-			<form onSubmit={authSubmitHandler}>
-				{!isLoginMode && (
-					<div>
-						<Input
-							element="input"
-							id="first_name"
-							type="text"
-							label="Your First Name"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter your valid First name."
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="last_name"
-							type="text"
-							label="Your Last Name"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter your valid Last name."
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="phone_number"
-							type="number"
-							label="Your Cell Phone number"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter you valid South African cell phone number."
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="idNum"
-							type="text"
-							label="Your South African ID number"
-							validators={[VALIDATOR_MINLENGTH(13)]}
-							errorText="Please enter you valid South African ID Number"
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="home_language"
-							type="text"
-							label="Your Home Language"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter you home language."
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="marital_status"
-							type="text"
-							label="Your Marital Status"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter marital status."
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="home_status"
-							type="text"
-							label="Your Home Status"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter Home status."
-							onInput={inputHandler}
-						/>
-						<Input
-							element="input"
-							id="dependents"
-							type="text"
-							label="Your number of dependents"
-							validators={[VALIDATOR_REQUIRE()]}
-							errorText="Please enter your number of dependents."
-							onInput={inputHandler}
-						/>
-					</div>
-				)}
-				<Input
-					element="input"
-					id="email"
-					type="email"
-					label="E-Mail"
-					validators={[VALIDATOR_EMAIL()]}
-					errorText="Please enter a valid email address."
-					onInput={inputHandler}
-				/>
-				<Input
-					element="input"
-					id="password"
-					type="password"
-					label="Password"
-					validators={[VALIDATOR_MINLENGTH(6)]}
-					errorText="Please enter a valid password, at least 6 characters."
-					onInput={inputHandler}
-				/>
-				<Button type="submit" >
-					{isLoginMode ? 'LOGIN' : 'SIGNUP'}
-				</Button>
-			</form>
-			<Button inverse onClick={switchModeHandler}>
-				SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
-			</Button>
-		</React.Fragment>
-	)
 
 	return (
 		<React.Fragment>
 			<ErrorModal error={error} onClear={clearError} />
 			<Card className="authentication">
 				{isLoading && <LoadingSpinner asOverlay />}
-				{authForm}
+				<h2>Login Required</h2>
+				<hr />
+				<form onSubmit={authSubmitHandler}>
+					{!isLoginMode && (
+						<React.Fragment>
+							<Input
+								element="input"
+								id="first_name"
+								type="text"
+								label="Your First Name"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter your valid First name."
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="last_name"
+								type="text"
+								label="Your Last Name"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter your valid Last name."
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="phone_number"
+								type="number"
+								label="Your Cell Phone number"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter you valid South African cell phone number."
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="idNum"
+								type="text"
+								label="Your South African ID number"
+								validators={[VALIDATOR_MINLENGTH(13)]}
+								errorText="Please enter you valid South African ID Number"
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="home_language"
+								type="text"
+								label="Your Home Language"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter you home language."
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="marital_status"
+								type="text"
+								label="Your Marital Status"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter marital status."
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="home_status"
+								type="text"
+								label="Your Home Status"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter Home status."
+								onInput={inputHandler}
+							/>
+							<Input
+								element="input"
+								id="dependents"
+								type="text"
+								label="Your number of dependents"
+								validators={[VALIDATOR_REQUIRE()]}
+								errorText="Please enter your number of dependents."
+								onInput={inputHandler}
+							/>
+						</React.Fragment>
+					)}
+					<Input
+						element="input"
+						id="email"
+						type="email"
+						label="E-Mail"
+						validators={[VALIDATOR_EMAIL()]}
+						errorText="Please enter a valid email address."
+						onInput={inputHandler}
+					/>
+					<Input
+						element="input"
+						id="password"
+						type="password"
+						label="Password"
+						validators={[VALIDATOR_MINLENGTH(6)]}
+						errorText="Please enter a valid password, at least 6 characters."
+						onInput={inputHandler}
+					/>
+					<Button type="submit" disabled={!formState.isValid}>
+						{isLoginMode ? 'LOGIN' : 'SIGNUP'}
+					</Button>
+				</form>
+				<Button inverse onClick={switchModeHandler}>
+					SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+				</Button>
 			</Card>
 		</React.Fragment>
 	);
