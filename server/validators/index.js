@@ -8,13 +8,11 @@ exports.userSignupValidator = (req, res, next) => {
             max: 10
         })
         .withMessage('South African phone number must have 10 digits');
-    req.check('email', 'Email must be between 3 to 32 characters')
+    req.check('email', 'Email is required and must be between 3 to 32 characters')
+        .notEmpty()
         .matches(/.+\@.+\..+/)
         .withMessage('Email must contain @ and a valid domain')
-        .isLength({
-            min: 4,
-            max: 32
-        });
+        .isLength({ min: 4, max: 32 });
     req.check('idNum', 'Valid South African Identification Number required').notEmpty();
     req.check('idNum')
         .isLength({

@@ -13,7 +13,7 @@ const uniqueMessage = error => {
         output =
             fieldName.charAt(0).toUpperCase() +
             fieldName.slice(1) +
-            " already exists";
+            " already exists, please log into your account instead";
     } catch (ex) {
         output = "Unique field already exists";
     }
@@ -37,9 +37,9 @@ exports.errorHandler = error => {
                 message = "Something went wrong";
         }
     } else {
-        for (let errorName in error.errorors) {
-            if (error.errorors[errorName].message)
-                message = error.errorors[errorName].message;
+        for (let errorName in error.errors) {
+            if (error.errors[errorName].message)
+                message = error.errors[errorName].message;
         }
     }
 
