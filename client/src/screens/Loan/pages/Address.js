@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Input from "../../../shared/components/UIElements/Input/Input";
 import ProgressBar from "../../../shared/components/UIElements/ProgressBar/ProgressBar";
@@ -12,7 +12,8 @@ import { AuthContext } from "../../../shared/context/auth-context";
 
 const URL = baseURL;
 
-const Address = () => {
+const Address = (props) => {
+    const { state } = props.location;
     const auth = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [done, setDone] = useState(false);
@@ -42,11 +43,6 @@ const Address = () => {
                     "city": "Kompton",
                     "province": "Gauteng",
                     "postal_code": "0187"
-                    // "street": data.street_name,
-                    // "suburb": data.suburb,
-                    // "city": data.city,
-                    // "province": data.province,
-                    // "postal_code": data.postal_code
                 },
                 {
                     headers: {
@@ -93,12 +89,26 @@ const Address = () => {
     const doneDiv = (
         <div className='body-padding text-center' style={{ margin: "10rem" }}>
             <h1>Your information was successfully saved, please continue on to the next section</h1>
-            <NavLink to={`/loan-employment/${auth.userId}`} className={'btn-custom'}>Continue</NavLink>
+            <Link to={{
+                pathname: `/loan-employment/${auth.userId}`,
+                state: {
+                    amount_due: state.amount_due,
+                    duration: state.duration,
+                    amount: state.amount,
+                    interest: state.interest,
+                    rate: state.rate,
+                    repaymentDay: state.repaymentDay
+                }
+            }} className={'btn-custom'}>Continue</Link>
         </div>
     );
     const addressDiv = (
         <div className="body-padding">
             <h2>Current Address</h2>
+            <p>Please fill in the following form with your information.</p>
+            <h3>Loan Duration: {state.duration} days</h3>
+            <h3>Repayment Date: {state.repaymentDay}</h3>
+            <h3>Amount Due: R{state.amount_due}</h3>
             <ProgressBar width='25%' step={"3"} />
             <Input value={data.street_name} name='street_name' placeholder='Street Name' type='Text' onChange={handleInputChange} />
             <Input value={data.suburb} name='suburb' placeholder='Suburb' type='Text' onChange={handleInputChange} />

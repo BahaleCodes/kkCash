@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Input from "../../../shared/components/UIElements/Input/Input";
 import ProgressBar from "../../../shared/components/UIElements/ProgressBar/ProgressBar";
@@ -12,7 +12,8 @@ import { AuthContext } from "../../../shared/context/auth-context";
 
 const URL = baseURL;
 
-const Bank = () => {
+const Bank = (props) => {
+    const { state } = props.location;
     const auth = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [done, setDone] = useState(false);
@@ -77,7 +78,7 @@ const Bank = () => {
         <div className='body-padding text-center' style={{ margin: "10rem" }}>
             <h1>Error</h1>
             <h2>{data.errorMessage}</h2>
-            <a href={`/loan-bank/${auth.userId}`} className='btn-custom' >Try again </a>
+            <Link href={`/loan-bank/${auth.userId}`} className='btn-custom' >Try again </Link>
             <a href='/auth' className="btn-custom" >Log in</a>
         </div>
     );
@@ -89,12 +90,26 @@ const Bank = () => {
     const doneDiv = (
         <div className='body-padding text-center' style={{ margin: "10rem" }}>
             <h1>Your information was successfully saved, please continue on to the next section</h1>
-            <NavLink to={`/loan-bank/${auth.userId}`} className={'btn-custom'}>Continue</NavLink>
+            <Link to={{
+                pathname: `/loan-apply/${auth.userId}`,
+                state: {
+                    amount_due: state.amount_due,
+                    duration: state.duration,
+                    amount: state.amount,
+                    interest: state.interest,
+                    rate: state.rate,
+                    repaymentDay: state.repaymentDay
+                }
+            }} className={'btn-custom'}>Continue</Link>
         </div>
     );
     const bankDiv = (
         <div className="body-padding" >
             <h2>Bank Details</h2>
+            <p>Please fill in the following form with your information.</p>
+            <h3>Loan Duration: {state.duration} days</h3>
+            <h3>Repayment Date: {state.repaymentDay}</h3>
+            <h3>Amount Due: R{state.amount_due}</h3>
             <ProgressBar width='90%' step='6' />
             <SelectBox value={data.bank_name} name='bank_name' placeholder='Bank Name' onChange={handleInputChange} questions={[
                 "Standard Bank",
@@ -126,7 +141,7 @@ const Bank = () => {
             <Input value={data.branch_code} name='branch_code' placeholder='Branch Code' onChange={handleInputChange} />
             <Input value={data.acc_holder} name='acc_holder' placeholder='Account holder' onChange={handleInputChange} />
             <div className='btns'>
-                <NavLink to={'/'} className='btn-custom-neg'>Cancel</NavLink>
+                <Link to={'/'} className='btn-custom-neg'>Cancel</Link>
                 <button onClick={handleSubmit} className='btn-custom'>Next</button>
             </div>
         </div>

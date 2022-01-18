@@ -1,10 +1,8 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import Input from "../../../shared/components/UIElements/Input/Input";
 import ProgressBar from "../../../shared/components/UIElements/ProgressBar/ProgressBar";
-import SelectBox from "../../../shared/components/UIElements/SelectBox/SelectBox";
 import LoadingSpinner from "../../../shared/components/UIElements/Spinner/LoadingSpinner";
 
 import { baseURL } from "../../../URI";
@@ -27,7 +25,7 @@ const Apply = (props) => {
         e.preventDefault();
         setLoading(true);
         await axios
-            .post(`${URL}address/create/${auth.userId}`,
+            .post(`${URL}loan/create/${auth.userId}`,
                 {
                     "amount": 900,
                     "duration": "20 days",
@@ -82,17 +80,30 @@ const Apply = (props) => {
             <h1>Your loan application was successfully saved.</h1>
             <h1>Please keep an eye open for any updates from our side regarding the loan.</h1>
             <h1>If the loan is approved and your information is successfully authenticated, the money will be sent into your account.</h1>
-            <NavLink to={`/${auth.userId}/profile`} className={'btn-custom'}>Continue</NavLink>
+            <Link to={{
+                pathname: `/${auth.userId}/profile`,
+                state: {
+                    amount_due: state.amount_due,
+                    duration: state.duration,
+                    amount: state.amount,
+                    interest: state.interest,
+                    rate: state.rate,
+                    repaymentDay: state.repaymentDay
+                }
+            }} className={'btn-custom'}>Continue</Link>
         </div>
     );
     const applyDiv = (
-        <div className='body-padding'>
+        <div className='body-padding text-center'>
             <h2>Application Complete</h2>
             <ProgressBar width='100%' step="7" />
-            <h2>We appreciate you patience, you information has been successfully saved and store into our database</h2>
-            <h2>Please confirm for us one last time the amount and the duration of your loan.</h2>
+            <h4>We appreciate you patience, you information has been successfully saved and store into our database</h4>
+            <h5>Please confirm for us one last time the amount and the duration of your loan.</h5>
             <Card >
-                <h3>Bitches</h3>
+                <h3>Loan information</h3>
+                <h5>Loan Duration: {state.duration} days</h5>
+                <h5>Repayment Date: {state.repaymentDay}</h5>
+                <h5>Amount Due: R{state.amount_due}</h5>
             </Card>
             <button onClick={handleSubmit} className='btn-custom'>Submit</button>
         </div>

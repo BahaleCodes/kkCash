@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Input from "../../../shared/components/UIElements/Input/Input";
 import ProgressBar from "../../../shared/components/UIElements/ProgressBar/ProgressBar";
@@ -12,7 +12,8 @@ import { AuthContext } from "../../../shared/context/auth-context";
 
 const URL = baseURL;
 
-const Employment = () => {
+const Employment = (props) => {
+    const { state } = props.location;
     const auth = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [done, setDone] = useState(false);
@@ -123,12 +124,26 @@ const Employment = () => {
     const doneDiv = (
         <div className='body-padding text-center' style={{ margin: "10rem" }}>
             <h1>Your information was successfully saved, please continue on to the next section</h1>
-            <NavLink to={`/loan-finances/${auth.userId}`} className={'btn-custom'}>Continue</NavLink>
+            <Link to={{
+                pathname: `/loan-finances/${auth.userId}`,
+                state: {
+                    amount_due: state.amount_due,
+                    duration: state.duration,
+                    amount: state.amount,
+                    interest: state.interest,
+                    rate: state.rate,
+                    repaymentDay: state.repaymentDay
+                }
+            }} className={'btn-custom'}>Continue</Link>
         </div>
     );
     const empDiv = (
         <div className="body-padding" >
             <h2>Employment Information</h2>
+            <p>Please fill in the following form with your information.</p>
+            <h3>Loan Duration: {state.duration} days</h3>
+            <h3>Repayment Date: {state.repaymentDay}</h3>
+            <h3>Amount Due: R{state.amount_due}</h3>
             <ProgressBar width='30%' step={"4"} />
             <SelectBox value={data.emp_status} name='emp_status' placeholder='Employee Status' onChange={handleInputChange} questions={[
                 "Employed",
