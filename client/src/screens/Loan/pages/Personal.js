@@ -78,7 +78,13 @@ const Personal = (props) => {
                     });
                 }
                 else {
-
+                    alert("Serve down");
+                    const errMess = "Server not responding, please try again later"
+                    setError(true);
+                    setData({
+                        ...data,
+                        errorMessage: errMess
+                    });
                 }
 
             })
@@ -88,7 +94,10 @@ const Personal = (props) => {
         <div className='body-padding text-center' style={{ margin: "10rem" }}>
             <h1>Error</h1>
             <h2>{data.errorMessage}</h2>
-            <a href='/loan-registration' className='btn-custom' >Try again </a>
+            <button onClick={() => {
+                window.location.reload(true)
+            }} className='btn-custom' 
+                >Try again </button>
             <a href='/auth' className="btn-custom" >Log in</a>
         </div>
     );
