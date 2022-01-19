@@ -174,12 +174,12 @@ hr {
   background-color: #0071c5;
   padding: 5px 14px;
   letter-spacing: 1px;
-  margin: 5px;
+  margin: 0;
   font-size: 18px;
   font-weight: 500;
   border-radius: 25px;
   transition: all 0.5s linear;
-  border: 2px solid black;
+  border: 2px solid #0071c5;
 }
 .btn-custom[disabled],
 .btn-custom:disabled{
@@ -193,8 +193,7 @@ hr {
 .btn-custom.active {
   color: #0071c5;
   background-color: #333;
-  margin: 10px;
-  border: 2px solid white;
+  margin: 5px;
 }
 .btn:active,
 .btn.active {
