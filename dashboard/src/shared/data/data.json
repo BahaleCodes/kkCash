@@ -1,0 +1,355 @@
+{
+    "users": [
+        {
+            "_id": "61bb172b24359b921c834a83",
+            "first_name": "Teddy",
+            "last_name": "Bearr",
+            "userimg": "/img/user.png",
+            "email": "teddy981@gmail.com",
+            "phone_number": "0987685186",
+            "idNum": "9099998920112",
+            "home_language": "Sesotho",
+            "marital_status": "Married",
+            "home_status": "Owner",
+            "dependents": "2",
+            "hashed_password": "55916ce4b153e7fbd296aaa22dc7d594f8447c5a",
+            "salt": "525be8c0-5e5c-11ec-b0e1-8ff280ec7f78",
+            "role": 1,
+            "loan_history": [
+                {
+                    "amount": 900,
+                    "duration": "20 days",
+                    "repay_date": "21 January 2022",
+                    "interest_rate": 0.12
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "1640977643314",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "1640977692234",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "1641033804283",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 12:47:38 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 12:47:38 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 12:47:38 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 15:25:39 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 15:25:39 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 15:37:10 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 15:37:10 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:31:50 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": 1639837915506
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:31:50 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "1639837958976"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:33:57 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "Sat Dec 18 2021 16:33:57 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:39:13 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "Sat Dec 18 2021 16:39:13 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:40:09 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "Sat Dec 18 2021 16:40:09 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:43:02 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "Sat Dec 18 2021 16:43:02 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:44:03 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "Sat Dec 18 2021 16:44:03 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 14,
+                    "repay_date": "Sat Jan 01 2022 16:47:34 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.1,
+                    "apply_date": "Sat Dec 18 2021 16:47:34 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": "1305",
+                    "duration": "18",
+                    "repay_date": "Wed Jan 19 2022 16:47:34 GMT+0200 (South Africa Standard Time)",
+                    "apply_date": "Sat Dec 18 2021 16:47:34 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 30,
+                    "repay_date": "Thu Feb 17 2022 14:35:52 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.3,
+                    "apply_date": "Tue Jan 18 2022 14:35:52 GMT+0200 (South Africa Standard Time)"
+                }
+            ],
+            "userAddress": [
+                {
+                    "street": "123 Mollo Blvd",
+                    "suburb": "Bahaleng",
+                    "city": "Kompton",
+                    "province": "Gauteng",
+                    "postal_code": "0187"
+                },
+                {
+                    "street": null,
+                    "suburb": null,
+                    "city": null,
+                    "province": "KwaZulu-Natal",
+                    "postal_code": null
+                },
+                {
+                    "street": "16 Cannis street",
+                    "suburb": "The Orchards",
+                    "city": "Pretoria",
+                    "province": "Gauteng",
+                    "postal_code": "1822"
+                }
+            ],
+            "userFinances": [
+                {
+                    "monthly_rates": "R10000",
+                    "groceries": "R2000",
+                    "commuting_costs": "R400",
+                    "loan_repayments": "R20",
+                    "child_maintenance": "R0",
+                    "desp_income": "R7600"
+                },
+                {
+                    "monthly_rates": "0",
+                    "groceries": "10000",
+                    "commuting_costs": "0",
+                    "loan_repayments": "0",
+                    "child_maintenance": "0",
+                    "desp_income": 960000
+                }
+            ],
+            "userBank": [
+                {
+                    "bank_name": "ABSA",
+                    "acc_num": "987654321012",
+                    "acc_type": "Savings",
+                    "branch_num": "234567",
+                    "acc_holder": "Thabo Mponya"
+                },
+                {
+                    "bank_name": "Absa",
+                    "acc_num": "99118822773",
+                    "acc_type": "Cheque",
+                    "branch_num": "234569",
+                    "acc_holder": "Thabo Mponya"
+                }
+            ],
+            "createdAt": "2021-12-16T10:38:35.341Z",
+            "updatedAt": "2022-01-18T12:35:56.382Z",
+            "__v": 0,
+            "userEmp": [
+                {
+                    "emp_status": "Employed",
+                    "gross_income": "R45000",
+                    "net_income": "R40000",
+                    "income_frequency": "Monthly",
+                    "salary_day": "28th",
+                    "work_number": "0623567890",
+                    "university": "NWU",
+                    "academic_year": "Year 4",
+                    "course_duration": "3 years",
+                    "division": "",
+                    "service_time": "",
+                    "emp_type": "Full Time",
+                    "employer_name": "Vactra",
+                    "emp_industry": "ICT",
+                    "emp_position": "Senior Developer",
+                    "time_with_employer": "1 month",
+                    "emp_duration": ""
+                },
+                {
+                    "emp_status": "Unemployed",
+                    "gross_income": "1000000",
+                    "net_income": "970000",
+                    "income_frequency": "Monthly",
+                    "salary_day": "25th of every month"
+                }
+            ]
+        },
+        {
+            "_id": "61e6ac939401bee86d57c519",
+            "first_name": "Teddy",
+            "last_name": "Bear",
+            "userimg": "/img/user.png",
+            "email": "teddy98144@gmail.com",
+            "phone_number": "0667685186",
+            "idNum": "9099998928112",
+            "home_language": "Sesotho",
+            "marital_status": "Married",
+            "home_status": "Owner",
+            "dependents": "2",
+            "hashed_password": "543b61b0b032d84f7db395dac636f065e8c9e283",
+            "salt": "a75b93c0-7856-11ec-a0b7-5747c0a33e05",
+            "role": 0,
+            "loan_history": [
+                {
+                    "amount": 900,
+                    "duration": "20 days",
+                    "repay_date": "21 January 2022",
+                    "interest_rate": 0.12
+                },
+                {
+                    "amount": 1500,
+                    "duration": 30,
+                    "repay_date": "Thu Feb 17 2022 14:19:58 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.3,
+                    "apply_date": "Tue Jan 18 2022 14:19:58 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 30,
+                    "repay_date": "Thu Feb 17 2022 14:23:19 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.3,
+                    "apply_date": "Tue Jan 18 2022 14:23:19 GMT+0200 (South Africa Standard Time)"
+                },
+                {
+                    "amount": 1500,
+                    "duration": 30,
+                    "repay_date": "Thu Feb 17 2022 14:33:12 GMT+0200 (South Africa Standard Time)",
+                    "interest_rate": 0.3,
+                    "apply_date": "Tue Jan 18 2022 14:33:12 GMT+0200 (South Africa Standard Time)"
+                }
+            ],
+            "userAddress": [
+                {
+                    "street": "123 Mollo Blvd",
+                    "suburb": "Bahaleng",
+                    "city": "Kompton",
+                    "province": "Gauteng",
+                    "postal_code": "0187"
+                },
+                {
+                    "amount": 900,
+                    "duration": "20 days",
+                    "repay_date": "21 January 2022",
+                    "interest_rate": 0.12
+                }
+            ],
+            "userEmp": [
+                {
+                    "emp_status": "Employed",
+                    "gross_income": "R45000",
+                    "net_income": "R40000",
+                    "income_frequency": "Monthly",
+                    "salary_day": "28th",
+                    "work_number": "0623567890",
+                    "university": "NWU",
+                    "academic_year": "Year 4",
+                    "course_duration": "3 years",
+                    "division": "",
+                    "service_time": "",
+                    "emp_type": "Full Time",
+                    "employer_name": "Vactra",
+                    "emp_industry": "ICT",
+                    "emp_position": "Senior Developer",
+                    "time_with_employer": "1 month",
+                    "emp_duration": ""
+                }
+            ],
+            "userFinances": [
+                {
+                    "monthly_rates": "R10000",
+                    "groceries": "R2000",
+                    "commuting_costs": "R400",
+                    "loan_repayments": "R20",
+                    "child_maintenance": "R0",
+                    "desp_income": "R7600"
+                }
+            ],
+            "userBank": [
+                {
+                    "bank_name": "ABSA",
+                    "acc_num": "987654321012",
+                    "acc_type": "Savings",
+                    "branch_num": "234567",
+                    "acc_holder": "Thabo Mponya"
+                },
+                {
+                    "bank_name": "ABSA",
+                    "acc_num": "987654321012",
+                    "acc_type": "Savings",
+                    "branch_num": "234567",
+                    "acc_holder": "Thabo Mponya"
+                }
+            ],
+            "createdAt": "2022-01-18T12:03:31.201Z",
+            "updatedAt": "2022-01-18T12:33:16.221Z",
+            "__v": 0
+        }
+    ]
+}

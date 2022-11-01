@@ -21,7 +21,15 @@ exports.create = (req, res) => {
                 error: errorHandler(err)
             });
         }
-        res.json({ data });
+        res.json(data);
+        User.findById(req.profile.id).exec((err, user) => {
+            if(err || !user) {
+                return res.status(400).json({
+                    error: "User not found"
+                })
+            }
+            user.finances = data._id;
+        })
     });
 };
 exports.read = (req, res) => {

@@ -32,7 +32,7 @@ const LoanApp = (props) => {
     };
     return (
         <div style={{
-            marginTop: "9rem"
+            marginTop: "10rem"
         }} className='container'>
             <div className='text-center'>
                 <div className='section-title'>
@@ -46,13 +46,22 @@ const LoanApp = (props) => {
                                 <br />
                             </div>
                             : <div>
+                                <h3 className={classes.highlight}>DESCLAIMER</h3>
                                 <h4>Please note that we are requiring some personal information for the application.</h4>
                                 <h4>As a result we need your concent to collect such information.</h4>
-                                <h4>We appreciate you trusting us with your personal information.</h4>
-                                <p>Please fill in the following form with your information.</p>
+                                <h4>Do you entrust KK Cash Loans with the personal information we require from you to process your loan application.</h4>
+                                <h4>We assure you that your information will only be used by KK Cash to process your loan application, and will only be shared for getting your credit report through a 3rd party.</h4>
+                                <h4>Your personal information is also protected by the <a className={classes.highlight} href='https://www.michalsons.com/focus-areas/privacy-and-data-protection/protection-of-personal-information-act-popia' >Protection of Personal Information Act</a>, as a result will be treated as very sensity information and will be handle with care.</h4>
+                                <h4><Link className={classes.highlight} to="/terms-of-use">Please note our terms and conditions</Link></h4>
+                                <h3><Link className={classes.highlight} to='/privacy'>Please note our Privacy policy</Link></h3>
+                                {/*<p>Please fill in the following form with your information.</p> */}
+                                <h3 className={classes.highlight}>Please note bellow information about your desired loan</h3>
                                 <h3>Loan Duration: {state.duration} days</h3>
                                 <h3>Repayment Date: {state.repaymentDay}</h3>
+                                <h3>Desired Amount: R{state.amount}</h3>
                                 <h3>Amount Due: R{state.amount_due}</h3>
+                                <h4>Do you accept our terms and conditions and would you like to continue with the loan application.</h4>
+                                <br />
                                 <Link to={{
                                     pathname: '/loan-registration',
                                     state: {

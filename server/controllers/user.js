@@ -23,40 +23,51 @@ exports.read = (req, res) => {
     return res.json(req.profile);
 };
 exports.update = (req, res) => {
-    const { first_name, last_name, email, phone_number } = req.body;
+    const { first_name, last_name, email, phone_number, idNum, home_language, home_status, marital_status, dependents, address, employment, bank, finances } = req.body;
     User.findOne({ _id: req.profile._id }, (err, user) => {
         if (err || !user) {
             return res.status(400).json({
                 error: 'User not found'
             });
         }
-        if (!first_name) {
-            return res.status(400).json({
-                error: 'First Name is required'
-            });
-        } else {
+        if (first_name) {
             user.first_name = first_name;
         }
-        if (!last_name) {
-            return res.status(400).json({
-                error: 'Last Name is required'
-            });
-        } else {
+        if (last_name) {
             user.last_name = last_name;
         }
-        if (!phone_number) {
-            return res.status(400).json({
-                error: 'Phone Number is required'
-            });
-        } else {
+        if (phone_number) {
             user.phone_number = phone_number;
         }
-        if (!email) {
-            return res.status(400).json({
-                error: 'E-mail is required'
-            });
-        } else {
+        if (email){
             user.email = email;
+        }
+        if (idNum){
+            user.idNum = idNum;
+        }
+        if (home_language) {
+            user.home_language = home_language
+        }
+        if (marital_status) {
+            user.marital_status = marital_status
+        }
+        if (home_status) {
+            user.home_status = home_status
+        }
+        if (dependents) {
+            user.dependents = dependents
+        }
+        if (address) {
+            user.address = address
+        }
+        if (employment) {
+            user.employment = employment
+        }
+        if (bank) {
+            user.bank = bank
+        }
+        if (finances) {
+            user.finances = finances
         }
         user.save((err, updatedUser) => {
             if (err) {
@@ -71,59 +82,68 @@ exports.update = (req, res) => {
         });
     });
 };
-
+exports.listUsers = (req, res) => {
+    User.find().exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                error: errorHandler(err)
+            });
+        }
+        res.json(data);
+    });
+};
+exports.appendAddressData = (req, res, next) => {
+    let address = null;
+    address = req.body
+    User.findOneAndUpdate({ _id: req.profile._id }, { address: address } , { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update address id'
+            });
+        }
+        next();
+    })
+};
+exports.addBankingData = (req, res, next) => {
+    let userBank = null;
+    userBank = req.body;
+    User.findOneAndUpdate({ _id: req.profile._id }, { userBank: userBank }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update banking details'
+            });
+        }
+        next();
+    });
+};
+exports.addEmpData = (req, res, next) => {
+    let userEmp = null;
+    userEmp = req.body;
+    User.findOneAndUpdate({ _id: req.profile._id }, { userEmp: userEmp }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update employment data'
+            });
+        }
+        next();
+    });
+};
+exports.addFinancesData = (req, res, next) => {
+    let userFinances = null;
+    userFinances = req.body;
+    User.findOneAndUpdate({ _id: req.profile._id }, { userFinances: userFinances }, { new: true }, (error, data) => {
+        if (error) {
+            return res.status(400).json({
+                error: 'Could not update financial data'
+            });
+        }
+        next();
+    });
+};
 exports.addLoanToUserHistory = (req, res, next) => {
     let loan_history = [];
     loan_history.push(req.body);
     User.findOneAndUpdate({ _id: req.profile._id }, { $push: { loan_history: loan_history } }, { new: true }, (error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: 'Could not update user purchase history'
-            });
-        }
-        next();
-    });
-};
-exports.addBankingToUserHistory = (req, res, next) => {
-    let userBank = [];
-    userBank.push(req.body);
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userBank: userBank } }, { new: true }, (error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: 'Could not update user purchase history'
-            });
-        }
-        next();
-    });
-};
-exports.addEmpToUserHistory = (req, res, next) => {
-    let userEmp = [];
-    userEmp.push(req.body);
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userEmp: userEmp } }, { new: true }, (error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: 'Could not update user purchase history'
-            });
-        }
-        next();
-    });
-};
-exports.addFInancesToUserHistory = (req, res, next) => {
-    let userFinances = [];
-    userFinances.push(req.body);
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userFinances: userFinances } }, { new: true }, (error, data) => {
-        if (error) {
-            return res.status(400).json({
-                error: 'Could not update user purchase history'
-            });
-        }
-        next();
-    });
-};
-exports.addAddressToUserAddress = (req, res, next) => {
-    let userAddress = [];
-    userAddress.push(req.body);
-    User.findOneAndUpdate({ _id: req.profile._id }, { $push: { userAddress: userAddress } }, { new: true }, (error, data) => {
         if (error) {
             return res.status(400).json({
                 error: 'Could not update user purchase history'

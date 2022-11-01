@@ -252,6 +252,7 @@ const Employment = (props) => {
                     ? <div>
                         <Input value={data.division} name='division' placeholder='Division' onChange={handleInputChange} />
                         <SelectBox value={data.service_time} name='service_time' placeholder='Time with Service' onChange={handleInputChange} questions={[
+                            "Less than a year",
                             "1 Year",
                             "2 Years",
                             "3 Years",

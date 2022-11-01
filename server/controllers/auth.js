@@ -12,7 +12,7 @@ exports.signup = (req, res) => {
             });
         }
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-        res.cookie('token', token, { expire: new Date() + 9999 });
+        res.cookie('token', token, { expire: new Date() + 99999 });
         user.salt = undefined;
         user.hashed_password = undefined;
         res.json({
@@ -36,9 +36,9 @@ exports.signin = (req, res) => {
             });
         }
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-        res.cookie('token', token, { expire: new Date() + 9999 });
-        const { _id, name, email, role } = user;
-        return res.json({ token, userId: _id, user: { _id, email, name, role } });
+        res.cookie('token', token, { expire: new Date() + 99999 });
+        const { _id, first_name, last_name, email, role } = user;
+        return res.json({ token, userId: _id, user: { _id, email, first_name, last_name, role } });
     });
 };
 exports.signout = (req, res) => {

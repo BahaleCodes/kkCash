@@ -9,16 +9,6 @@ const NavLinks = props => {
 
 	return (
 		<ul className="nav-links">
-			{/* {auth.isLoggedIn && (
-				<li>
-					<NavLink to={'/loans'}>Loans</NavLink>
-				</li>
-			)}
-			{auth.isLoggedIn && (
-				<li>
-					<NavLink to={'/users'}>Users</NavLink>
-				</li>
-			)} */}
 			{auth.isLoggedIn && (
 				<li>
 					<button onClick={auth.logout}>LOGOUT</button>

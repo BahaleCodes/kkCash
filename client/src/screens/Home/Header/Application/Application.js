@@ -13,8 +13,9 @@ const URL = baseURL;
 
 const Application = (props) => {
     const { token, userId } = useAuth();
-    const [startDate, setStartDate] = useState(new Date());
-    const [applyDate, setApplyDate] = useState(new Date());
+    //Removed the sets to get rid of the warnings
+    const [startDate ] = useState(new Date());
+    const [applyDate ] = useState(new Date());
     const [data, setData] = useState({
         loading: false,
         repaymentDay: null,
@@ -186,7 +187,7 @@ const Application = (props) => {
                                         amount: data.amount,
                                         interest: data.interest,
                                         rate: data.rate,
-                                        repaymentDay: startDate.toString()
+                                        repaymentDay: startDate.toDateString(),
                                     }
                                 }} className='btn-custom'>Continue</Link>
                         }

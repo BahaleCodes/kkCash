@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Header from './Header/Header';
 import Intro from './Intro/Intro';
-import Question from './Questions';
-import WhyUs from './WhyUs';
 
 import classes from './Home.module.css';
-import jsonData from '../../data/data.json';
 
 const Home = () => {
-    const [kkdata, setKKdata] = useState([]);
-    useEffect(() => {
-        setKKdata(jsonData);
-    }, []);
-
+    const [showMore, setShowMore] = useState(false);
     return (
         <div style={{ marginTop: "10rem" }} className='text-center' >
             <div className={classes.Header} >
                 <Header />
             </div>
-            <Intro />
-            <WhyUs data={kkdata.Values} />
-            <Question />
+            <button className={`btn-custom ${classes.showMoreBtn}`} onClick={
+                () => (setShowMore(prevShowMore => !prevShowMore))
+            } >
+                {
+                    showMore
+                        ? <i className='fa fa-arrow-up'></i>
+                        : <h3>More Details ...</h3>
+                }
+            </button>
+            {
+                showMore
+                    ? <Intro />
+                    : ''
+            }
         </div>
     )
 }

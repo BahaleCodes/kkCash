@@ -1,4 +1,5 @@
 const Address = require('../models/address');
+const User = require('../models/user');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 
 exports.addressById = (req, res, next, id) => {
@@ -15,6 +16,7 @@ exports.addressById = (req, res, next, id) => {
 exports.create = (req, res) => {
     req.body.user = req.profile;
     const address = new Address(req.body);
+    address.user = req.body.user._id
     address.save((err, data) => {
         if (err) {
             return res.status(400).json({

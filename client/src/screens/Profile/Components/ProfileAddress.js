@@ -1,52 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Card from '../../../shared/components/UIElements/Card/Card';
 import Input from '../../../shared/components/UIElements/Input/Input';
-import Address from '../../Loan/Components/Address';
+import LoadingSpinner from '../../../shared/components/UIElements/Spinner/LoadingSpinner';
 
 const ProfileAddress = (props) => {
     const [edit, setEdit] = useState(false);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        axios.get(`${props.URL}address/view/${props.addressId}/${props.userId}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${props.token}`
+                }
+            })
+            .then((res) => {
+                setLoading(false);
+                setData(JSON.parse(JSON.stringify(res.data)));
+            })
+            .catch((err) => {
+                console.log(err)
+                setLoading(false);
+            })
+    }, [props.URL, props.addressId, props.token, props.userId]);
+
+    const handleInputChange = event => {
+        setData({
+            ...data,
+            [event.target.name]: event.target.value
+        });
+    };
+
+    const updateAddress = async () => {
+        setLoading(true);
+        await axios
+            .put(`${props.URL}address/update/${props.addressId}/${props.userId}`, {
+                "street": data.street,
+                "suburb": data.suburb,
+                "city": data.city,
+                "province": data.province,
+                "postal_code": data.postal_code
+            },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${props.token}`
+                    }
+                }
+            )
+            .then((response) => {
+                setLoading(false);
+                setData({
+                    ...data,
+                });
+            })
+            .catch(error => {
+                setLoading(false);
+                setData({
+                    ...data,
+                })
+            });
+    }
     return (
         <Card>
+            <h2>Address Information
+                <button onClick={() => {
+                    setEdit(!edit)
+                }} className='btn-custom'>
+                    {
+                        edit
+                            ? <i className='fa fa-close'></i>
+                            : <i className='fa fa-edit'></i>
+                    }
+                </button>
+            </h2>
             {
-                props.newApp
-                    ? <Address
-                        street_name={props.street_name}
-                        suburb={props.suburb}
-                        city={props.city}
-                        province={props.province}
-                        postalcode={props.postalcode}
-                        profile={true}
-                        addressNext={props.addressDone}
-                        handleInputChange={props.onChange}
-                    />
+                loading
+                    ? <React.Fragment>
+                        <LoadingSpinner />
+                    </React.Fragment>
                     : <React.Fragment>
-                        <h2>Address Information
-                            <button onClick={() => {
-                                setEdit(!edit)
-                            }} className='btn-custom'>
-                                {
-                                    edit
-                                        ? <i className='fa fa-close'></i>
-                                        : <i className='fa fa-edit'></i>
-                                }
-                            </button>
-                        </h2>
-                        <Input value={props.street_name} name='street_name' placeholder='Street Name' type='Text' disabled={!edit} onChange={props.onChange} />
-                        <Input value={props.suburb} name='suburb' placeholder='Suburb' type='Text' disabled={!edit} onChange={props.onChange} />
-                        <Input value={props.city} name='city' placeholder='City' type='Text' disabled={!edit} onChange={props.onChange} />
-                        <Input value={props.province} name='province' placeholder='Province' type='Text' disabled={!edit} onChange={props.onChange} />
-                        <Input value={props.postalcode} name='postalcode' placeholder='Postal Code' type='Number' disabled={!edit} onChange={props.onChange} />
+                        <Input value={data.street} name='street' placeholder='Street Name' type='Text' disabled={!edit} onChange={handleInputChange} />
+                        <Input value={data.suburb} name='suburb' placeholder='Suburb' type='Text' disabled={!edit} onChange={handleInputChange} />
+                        <Input value={data.city} name='city' placeholder='City' type='Text' disabled={!edit} onChange={handleInputChange} />
+                        <Input value={data.province} name='province' placeholder='Province' type='Text' disabled={!edit} onChange={handleInputChange} />
+                        <Input value={data.postal_code} name='postal_code' placeholder='Postal Code' type='Number' disabled={!edit} onChange={handleInputChange} />
                     </React.Fragment>
             }
             {
                 edit
                     ? <div className='btns'>
-                        <button onClick={props.bankUpdate} className='btn-custom' disabled={!edit}>Update</button>
+                        <button onClick={updateAddress} className='btn-custom' disabled={!edit}>Update</button>
                     </div>
                     : ''
             }
-        </Card>
+        </Card >
     )
 }
 

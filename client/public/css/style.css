@@ -193,7 +193,6 @@ hr {
 .btn-custom.active {
   color: #0071c5;
   background-color: #333;
-  margin: 5px;
 }
 .btn:active,
 .btn.active {

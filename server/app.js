@@ -18,7 +18,7 @@ const loanRoutes = require('./routes/loan');
 // app
 const app = express();
 app.get('/', (req, res) => {
-    res.send("What tha fuck are you tryna see here!!!");
+    res.send("What tha fuck are you still tryna see here!!!");
 });
 
 // db

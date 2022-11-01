@@ -43,6 +43,8 @@ const App = () => {
 				<Route path='/terms-of-use' exact component={Terms} />
 				<Route path='/help' exact component={Help} />
 				<Route path="/:userId/profile" exact component={Profile} />
+				<Route path="/loan" exact component={LoanApp} />
+				<Route path="/loan-registration" exact component={Personal} />
 				<Route path="/loan-address/:userId" exact component={Address} />
 				<Route path="/loan-bank/:userId" exact component={Bank} />
 				<Route path="/loan-employment/:userId" exact component={Employment} />

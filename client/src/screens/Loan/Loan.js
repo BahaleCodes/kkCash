@@ -449,7 +449,7 @@ const Loan = (props) => {
     )
     return (
         <div style={{
-            marginTop: "9rem"
+            marginTop: "10rem"
         }} className='container'>
             <div className='text-center'>
                 <div className='section-title'>

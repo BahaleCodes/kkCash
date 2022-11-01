@@ -10,9 +10,10 @@ import Users from './user/pages/Users';
 import Dashboard from './dashboard/Dashboard';
 import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
+import Client from './Clients/Client';
+
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
-import Loans from './loans/Loans';
 
 const App = () => {
 	const { token, login, logout, userId } = useAuth();
@@ -22,8 +23,8 @@ const App = () => {
 		routes = (
 			<Switch>
 				<Route path="/users" exact component={Users} />
-				<Route path="/loans" exact component={Loans} />
 				<Route path='/dashboard' exact component={Dashboard} />
+				<Route path="/client/:userId" exact component={Client} />
 				<Redirect to="/dashboard" />
 			</Switch>
 		);

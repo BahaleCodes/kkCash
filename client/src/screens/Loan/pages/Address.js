@@ -1,16 +1,17 @@
 import React, { useContext, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { Link } from "react-router-dom";
 
 import Input from "../../../shared/components/UIElements/Input/Input";
 import ProgressBar from "../../../shared/components/UIElements/ProgressBar/ProgressBar";
 import SelectBox from "../../../shared/components/UIElements/SelectBox/SelectBox";
 import Spinner from "../../../shared/components/UIElements/Spinner/LoadingSpinner";
+import { CreateAddress } from "../../../api/address";
 
-import { baseURL } from "../../../URI";
+// import { baseURL } from "../../../URI";
 import { AuthContext } from "../../../shared/context/auth-context";
 
-const URL = baseURL;
+// const URL = baseURL;
 
 const Address = (props) => {
     const { state } = props.location;
@@ -35,26 +36,22 @@ const Address = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        await axios
-            .post(`${URL}address/create/${auth.userId}`,
-                {
-                    "street": "123 Mollo Blvd",
-                    "suburb": "Bahaleng",
-                    "city": "Kompton",
-                    "province": "Gauteng",
-                    "postal_code": "0187"
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${auth.token}`
-                    }
-                }
-            )
-            .then(response => {
+        CreateAddress({
+            street_name: data.street_name,
+            suburb: data.suburb,
+            city: data.city,
+            province: data.province,
+            postal_code: data.postal_code,
+            userId: auth.userId,
+            token: auth.token
+        })
+            .then((response) => {
                 setLoading(false);
                 setDone(true);
-                response.json();
+                response.json()
+                console.log(response.data);
+                // await axios
+                //     .put(`${}`)
             })
             .catch(error => {
                 setLoading(false);
@@ -66,9 +63,6 @@ const Address = (props) => {
                         ...data,
                         errorMessage: errMes
                     });
-                }
-                else {
-
                 }
             })
     }
@@ -105,7 +99,8 @@ const Address = (props) => {
     const addressDiv = (
         <div className="body-padding">
             <h2>Current Address</h2>
-            <p>Please fill in the following form with your information.</p>
+            <h4>We appreciate you trusting us with your personal information.</h4>
+            <h3>Please fill in the following form with your information.</h3>
             <h3>Loan Duration: {state.duration} days</h3>
             <h3>Repayment Date: {state.repaymentDay}</h3>
             <h3>Amount Due: R{state.amount_due}</h3>
@@ -125,14 +120,19 @@ const Address = (props) => {
                 "Western Cape"
             ]} />
             <Input value={data.postal_code} name='postal_code' placeholder='Postal Code' type='Number' onChange={handleInputChange} />
+
+            <br />
             <div className='btns'>
                 <a href='/' className='btn-custom-neg'>Cancel</a>
                 <button onClick={handleSubmit} className='btn-custom'>Next</button>
             </div>
+            <br />
         </div>
     )
     return (
-        <div className='container'>
+        <div style={{
+            marginTop: "11rem"
+        }} className='container'>
             {!loading && !done && !error && addressDiv}
             {loading && loadingDiv}
             {done && doneDiv}
